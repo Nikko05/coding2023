@@ -4,12 +4,14 @@ const port = 3000
 const mysql = require('mysql2')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
+const stripe = require('stripe')('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');
 const bcrypt = require("bcrypt")
 
 
 app.set('view-engine', 'ejs')
 app.use(cookieParser())
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
     host: 'roundhouse.proxy.rlwy.net',
@@ -19,6 +21,17 @@ const connection = mysql.createConnection({
     port: 42881
 });
 
+
+app.get('/donations', (req, res) => {
+  res.render('donations.ejs', { stripePublicKey: process.env.STRIPE_PUBLIC_KEY });
+});
+
+
+
+
+app.listen(port, () => {
+    console.log(`Serwer działa na http://localhost:${port}`);
+});
 connection.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
