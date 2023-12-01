@@ -23,6 +23,8 @@ connection.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
   });
+const path = require('path')
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/register', (req, res) => {
   res.render('register.ejs')
