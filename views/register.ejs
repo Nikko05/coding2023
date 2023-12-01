@@ -3,28 +3,39 @@
     <head>
         <title>Rejestracja</title>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
     </head>
     <body>
+        <div class="main-container">
         <form method="post" action="/register">
-            <input type="text" name="login" placeholder="login" />
-            <input type="password" name="pass1" placeholder="Hasło" />
-            <input type="password" name="pass2" placeholder="Powtórz hasło" />
-            <input type="email" name="email" placeholder="email" />
-            <select onclick="show()" id="sel" name = 'select'>
-                <option>Obywatel</option>
-                <option>Rząd</option>
-            </select>
-            <input type="password" id="klucz" name="klucz" style="display:none;" placeholder="klucz" />
-            <input type="submit" value="Zarejestruj się"/>
+            <h2>Rejestracja</h2>
+            <div>
+                <label>Imię</label>
+                <input type="text" name="imie" placeholder="Imię" required/>
+            </div>
+            <div>
+                <label>Nazwisko</label>
+                <input type="text" name="nazwisko" placeholder="Nazwisko" required/>
+            </div>
+            <div>
+                <label>Email</label>
+                <input type="email" name="email" placeholder="Email" required/>
+            </div>
+            <div>
+                <label>Login</label>
+                <input type="text" name="login" placeholder="Login" required/>
+            </div>
+            <div>
+                <label>Hasło</label>
+                <input type="password" name="pass1" placeholder="Hasło" required/>
+            </div>
+            <div>
+                <label>Powtórz hasło</label>
+                <input type="password" name="pass2" placeholder="Powtórz hasło" required/>
+            </div>
+            
+            <input type="submit" value="Zarejestruj się" class="submit"/>
         </form>
-        <script>
-            function show() {
-                if (document.getElementById('sel').value == 'Rząd') {
-                    document.getElementById('klucz').style.display = 'block';
-                } else {
-                    document.getElementById('klucz').style.display = 'none';
-                }
-            }
-        </script>
+        </div>
     </body>
 </html>

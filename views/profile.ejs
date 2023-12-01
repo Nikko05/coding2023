@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil</title>
+  </head>
+  <body>
+
+    <form method="post" action="/profile">
+      <label for="Name">Imie</label>
+      <input type="text" name="Name" id="name" readonly/>
+      <label for="Surname">Nazwisko</label>
+      <input type="text" name="Surname" id="surname" readonly/>
+      <label for="BirthDate">Data urodzin</label>
+      <input type="text" name="BirthDate" id="birthDate" readonly/>
+      <label for="Bio">Opis</label>
+      <textarea name="Bio" readonly id="bio"></textarea>
+      <label for="BloodType">Grupa krwi</label>
+      <input type="text" name="BloodType" id="bloodType" readonly>
+      <input hidden onclick="disable()"  id="btnSend" type="submit" title="Zapisz">
+      
+    </form>
+    <button onclick="edit()">Edytuj</button>
+    <script>
+      function edit(){
+        document.getElementById("name").readOnly = false;
+        document.getElementById("surname").readOnly = false;
+        document.getElementById("birthDate").readOnly = false;
+        document.getElementById("bio").readOnly = false;
+        document.getElementById("bloodType").readOnly = false;
+        document.getElementById("btnSend").hidden= false;
+      }
+
+      function disable(){
+        document.getElementById("name").readOnly = true;
+        document.getElementById("surname").readOnly = true;
+        document.getElementById("birthDate").readOnly = true;
+        document.getElementById("bio").readOnly = true;
+        document.getElementById("bloodType").readOnly = true;
+        document.getElementById("btnSend").hidden = true;
+      }
+    </script>
+  </body>
+</html>
