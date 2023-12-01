@@ -66,8 +66,23 @@ app.post('/register', urlencodedParser, (req,res) => {
 })
 
 app.get('/', (req, res) => {
+    var cookie
     if (req.cookies['user']) {
-        res.render('index.ejs')
+        cookie = req.cookies['user']
+        var wyswietl = "<html><head><title>Zagrozenia</title></head><body>"
+        connection.query(`SELECT * FROM dangers ORDER BY data DESC;`, function(err, result, fields) {
+            if (Object.keys(result).length > 0){
+                for (var i = 0; i < Object.keys(result).length; i++) {
+                    wyswietl += "<div>"
+                    wyswietl += "<p>" + result[i].lokacja + "</p>"
+                    wyswietl += "<p>" + result[i].data + "</p>"
+                    wyswietl += "<p>" + result[i].rodzaj + "</p>"
+                    wyswietl += "<p>" + result[i].opis + "</p></div>"
+                }
+            }
+            wyswietl += "</body></html>"
+            res.send(wyswietl)
+        })
     } else {
         res.redirect('/login')
     }
