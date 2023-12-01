@@ -12,13 +12,13 @@ app.use(cookieParser())
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.get('/', (req, res) => {
-  res.render('Hello World!sdsds')
+  res.render('register.ejs')
 })
 
 const connection = mysql.createConnection({
     host: 'roundhouse.proxy.rlwy.net',
     user: 'root',
-    password: '',
+    password: '-1GHde2Ad5C3gfBA-Ga22ddB1gBfhE5e',
     database: 'railway',
     port: 45362
 });
