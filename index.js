@@ -11,9 +11,11 @@ app.set('view-engine', 'ejs')
 app.use(cookieParser())
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-app.get('/', (req, res) => {
+app.get('/register', (req, res) => {
   res.render('register.ejs')
 })
+
+app.post('/register')
 
 const connection = mysql.createConnection({
     host: 'roundhouse.proxy.rlwy.net',
