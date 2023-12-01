@@ -5,14 +5,12 @@ const mysql = require('mysql')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 
-
-
 app.set('view-engine', 'ejs')
 app.use(cookieParser())
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.get('/', (req, res) => {
-  res.render('Hello World!sdsds')
+  res.render('index.ejs')
 })
 
 const connection = mysql.createConnection({
