@@ -4,12 +4,12 @@ const port = 3000
 const mysql = require('mysql')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
-
-
-
 app.set('view-engine', 'ejs')
 app.use(cookieParser())
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+const path = require('path')
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/register', (req, res) => {
   res.render('register.ejs')
