@@ -15,6 +15,10 @@ app.get('/register', (req, res) => {
   res.render('register.ejs')
 })
 
+app.get('/profile', (req, res) => {
+  res.render('profile.ejs')
+})
+
 app.post('/register')
 
 const connection = mysql.createConnection({
