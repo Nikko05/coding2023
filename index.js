@@ -6,6 +6,14 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
+const connection = mysql.createConnection({
+    host: 'roundhouse.proxy.rlwy.net',
+    user: 'root',
+    password: '',
+    database: 'railway',
+    port: 45362
+});
+
 app.listen(port, () => {
 
 })
