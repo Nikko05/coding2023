@@ -102,6 +102,21 @@ app.post("/login", urlencodedParser, (req, res)=>{
     res.redirect('/login')
 })
 
+app.get("/profile", urlencodedParser, (req, res)=>{
+  res.render("profile.ejs");
+})
+
+
+app.post("/profile", urlencodedParser, (req, res)=>{
+  let name = req.body.name;
+  let surname = req.body.surname;
+  let birthDate = req.body.birthDate;
+  let bio = req.body.bio;
+  let bloodType = req.body.bloodType;
+
+  res.redirect("/");
+})
+
 
 app.listen(port, () => {
 

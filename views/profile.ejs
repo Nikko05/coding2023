@@ -8,7 +8,7 @@
   </head>
   <body>
 
-    <form method="post" action="index.js">
+    <form method="post" action="/profile">
       <label for="Name">Imie</label>
       <input type="text" name="Name" id="name" readonly/>
       <label for="Surname">Nazwisko</label>
@@ -19,9 +19,10 @@
       <textarea name="Bio" readonly id="bio"></textarea>
       <label for="BloodType">Grupa krwi</label>
       <input type="text" name="BloodType" id="bloodType" readonly>
+      <input hidden onclick="disable()"  id="btnSend" type="submit" title="Zapisz">
+      
     </form>
     <button onclick="edit()">Edytuj</button>
-    <button hidden onclick="disable()" id="btnSend">Zapisz</button>
     <script>
       function edit(){
         document.getElementById("name").readOnly = false;
@@ -29,7 +30,7 @@
         document.getElementById("birthDate").readOnly = false;
         document.getElementById("bio").readOnly = false;
         document.getElementById("bloodType").readOnly = false;
-        document.getElementById("btnSend").hidden = false;
+        document.getElementById("btnSend").hidden= false;
       }
 
       function disable(){
