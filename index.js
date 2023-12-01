@@ -3,25 +3,24 @@ const app = express()
 const port = 3000
 const mysql = require('mysql')
 const bodyParser = require("body-parser")
-const bcrypt = require("bcrypt")
-const fetch = require("node-fetch")
 const cookieParser = require("cookie-parser")
-const crypto = require("crypto")
-const { text } = require('body-parser')
-const axios = require("axios")
+
+
 
 app.set('view-engine', 'ejs')
 app.use(cookieParser())
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.get('/register', (req, res) => {
+  res.render('register.ejs')
 })
+
+app.post('/register')
 
 const connection = mysql.createConnection({
     host: 'roundhouse.proxy.rlwy.net',
     user: 'root',
-    password: '',
+    password: '-1GHde2Ad5C3gfBA-Ga22ddB1gBfhE5e',
     database: 'railway',
     port: 45362
 });
