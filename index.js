@@ -41,27 +41,43 @@ app.get("/earthquakes", (req, res) => {
 
 
 app.get('/donations', (req, res) => {
-  res.render('donations.ejs');
+    if (req.cookies['user']) {
+        res.render('donations.ejs');
+    } else {
+        res.redirect('/login')
+    }
 });
 
 
 app.get('/map', (req, res) => {
-  res.render('map.ejs');
+    if (req.cookies['user']) {
+        res.render('map.ejs');
+    } else {
+        res.redirect('/login')
+    }
 });
 
 
 app.post('/baza', (req, res) => {
-  connection.query('SELECT * FROM dangers', (error, results, fields) => {
-    if (error) {
-      console.error('Błąd zapytania SQL:', error);
-      return res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: error.message });
+    if (req.cookies['user']) {
+        connection.query('SELECT * FROM dangers', (error, results, fields) => {
+            if (error) {
+              console.error('Błąd zapytania SQL:', error);
+              return res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: error.message });
+            }
+        
+            const danezbazy = results;
+            res.json({ danezbazy });
+          });
+    } else {
+        res.redirect('/login')
     }
 
-    const danezbazy = results;
-    res.json({ danezbazy });
-  });
 });
 app.post('/map', async (req, res) => {
+    if (req.cookies['user']) {
+
+    
   try {
     const { latitude, longitude, typeOfDanger, descriptionOfDanger } = req.body;
     
@@ -103,6 +119,9 @@ app.post('/map', async (req, res) => {
     console.error('Błąd zapytania POST:', error);
     res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: error.message });
   }
+    } else {
+        res.redirect('/login')
+    }
 });
 
 
@@ -255,7 +274,11 @@ const path = require('path')
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/register", (req, res) => {
-  res.render("register.ejs");
+    if (req.cookies['user']) {
+        res.redirect('/')
+    } else {
+        res.render("register.ejs");
+    }
 });
 
 app.get('/login', (req, res) => {
@@ -299,32 +322,6 @@ app.post("/register", urlencodedParser, (req, res) => {
   )
 })
 
-app.post('/register', urlencodedParser, (req, res) => {
-  var imie = req.body.imie
-  var nazwisko = req.body.nazwisko
-  var email = req.body.email
-  var login = req.body.login
-  var pass1 = req.body.pass1
-  var pass2 = req.body.pass2
-  var pass
-  var admin = 0
-  connection.query(`SELECT id FROM users WHERE login = '${login}';`, function (err, result, fields) {
-    if (Object.keys(result).length > 0) {
-      res.send('Juz istnieje taki uzytkownik')
-    } else {
-      if (pass1 == pass2) {
-        bcrypt.hash(pass1, 10, function (err, hash) {
-          connection.query(`INSERT INTO users (imie, nazwisko, email, login, haslo, admin) VALUES ('${imie}', '${nazwisko}', '${email}', '${login}', '${hash}', '${admin}');`, function (err, result) {
-            if (err) throw err
-            res.redirect('/login')
-          })
-        });
-      } else {
-        res.send("Hasła się różnią")
-      }
-    }
-  });
-});
 
 
 app.get('/', (req, res) => {
@@ -386,36 +383,40 @@ app.get('/logout', (req, res) => {
 })
 
 app.get("/profile", urlencodedParser, (req, res) => {
-  let cookie = req.cookies["user"];
+    if (req.cookies['user']) {
+        let cookie = req.cookies["user"];
 
-  connection.query(
-    `SELECT imie, nazwisko, login, email FROM users WHERE login = '${cookie}'`,
-    function (err, result, fields) {
-      if (err) {
-        console.error("Error executing query:", err);
-        res.status(500).send("Internal Server Error");
-        return;
-      }
-
-      // Check if a user was found
-      if (result.length > 0) {
-        let imie = result[0].imie;
-        let nazwisko = result[0].nazwisko;
-        let login = result[0].login;
-        let email = result[0].email;
-
-        res.render("profile.ejs", {
-          imie: imie,
-          nazwisko: nazwisko,
-          login: login,
-          email: email,
-        });
-      } else {
-        // No user found with the given cookie value
-        res.status(404).send("User not found");
-      }
+        connection.query(
+          `SELECT imie, nazwisko, login, email FROM users WHERE login = '${cookie}'`,
+          function (err, result, fields) {
+            if (err) {
+              console.error("Error executing query:", err);
+              res.status(500).send("Internal Server Error");
+              return;
+            }
+      
+            // Check if a user was found
+            if (result.length > 0) {
+              let imie = result[0].imie;
+              let nazwisko = result[0].nazwisko;
+              let login = result[0].login;
+              let email = result[0].email;
+      
+              res.render("profile.ejs", {
+                imie: imie,
+                nazwisko: nazwisko,
+                login: login,
+                email: email,
+              });
+            } else {
+              // No user found with the given cookie value
+              res.status(404).send("User not found");
+            }
+          }
+        );
+    } else {
+        res.redirect('/login')
     }
-  );
 });
 
 
@@ -430,9 +431,6 @@ app.post("/profile", urlencodedParser, (req, res) => {
 })
 
 //do wyświertlania
-app.get('/report', (req, res) => {
-  res.render('reportEvent.ejs')
-})
 
 app.listen(port, () => {
 

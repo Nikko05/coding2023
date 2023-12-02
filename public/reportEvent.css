@@ -3,7 +3,7 @@
 }
 
 .subtitle {
-  font-size: 14px;
+  font-size: 16px;
   margin: 2% 0;
 }
 
@@ -24,8 +24,31 @@ label {
   font-size: 16px;
 }
 
-input[type = 'submit'] {
-  font-size: 18px;
+button {
+  font-size: 16px;
+}
+
+.submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #B3B3B3;
+  flex-direction: row;
+}
+
+.submit::after {
+  content: '';
+
+  margin-left: 15px;
+  width: 40px;
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  background-image: url('icons/arrow2.svg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
  
 .subtitle, .left-container form {
@@ -50,4 +73,93 @@ input[type = 'submit'] {
   height: 100%;
   width: 100%;
   border-radius: 0 10px 10px 0;
+}
+
+@media (max-width: 750px) {
+  .main-container {
+    width: 94%;
+  }
+}
+
+@media (max-width: 650px) {
+  .left-container, .right-container {
+    width: 100%;
+    height: 55%;
+  }
+
+  .right-container {
+     height: 45%;
+  }
+
+  .main-container {
+    flex-direction: column;
+    width: 90%;
+    height: 94%;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .map {
+    border-radius: 0 0 10px 10px;
+  }
+}
+
+@media screen and (max-width: 420px) {
+  body {
+    height: 120%;
+  }
+
+  .main-container {
+    width: 100vw;
+    height: 100%;
+  }
+  
+  .title {
+    font-size: 42px;
+    margin: 20px 0;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  option {
+    width: 90%;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 400px) { 
+  .title {
+    font-size: 26px;
+    margin: 0;
+  }
+
+  .subtitle {
+    font-size: 12px;
+  }
+
+  select, textarea {
+    font-size: 12px; 
+    padding: 5px 8px;
+  }
+
+  #descriptionOfDanger {
+    margin-bottom: 5px;
+  }
+
+  .left-container {
+    padding: 20px 0 0 0;
+  }
+
+  label  {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 6px 20px;
+  }
 }
