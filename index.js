@@ -57,9 +57,84 @@ app.post('/map', async (req, res) => {
 
 
 
+app.get('/grupy', (req, res) => {
+    if (req.cookies['user']) {
+        var cookie = req.cookies['user']
+        connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function (err, result) {
+            if (Object.keys(result).length > 0) {
+                if (result[0].id_grupy == null) {
+                    res.render('grupy.ejs')
+                } else {
+                    res.redirect('/grupyCzlonek')
+                }
+            }
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
 
+app.get('/grupyCzlonek', (req, res) => {
+    if (req.cookies['user']) {
+        var wyswietl = "<html><head><title>Twoja grupa</title></head><body>"
+        var cookie = req.cookies['user']
+        connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function(err, result, fields) {
+            if (Object.keys(result).length > 0) {
+                var id_grupy = result[0].id_grupy
+                connection.query(`SELECT * FROM users INNER JOIN groupy ON users.id_grupy = groupy.id WHERE users.id_grupy = ${id_grupy}`, function (err, res1, fields) {
+                    if (Object.keys(res1).length > 0) {
+                        wyswietl += "<p>" + res1[0].nazwa + "</p>"
+                        for (var i = 0; i < res1.length; i++) {
+                            wyswietl += "<div><p>" + res1[i].imie + " " + res1[i].nazwisko + "</p>" + "<p>" + res1[i].email + "</p></div>"
+                        }
+                        wyswietl += "</body>"
+                        res.send(wyswietl)
+                    } else {
+                        res.redirect('/grupy')
+                    }
+                })
+            }
+        })
+    } else {
+        res.redirect('login')
+    }
+})
 
-
+app.post('/grupy', (req, res) => {
+    if (req.cookies['user']) {
+        var cookie = req.cookies['user']
+        var nazwa = req.body.nazwa
+        var id
+        connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function (err, result) {
+                if (Object.keys(result).length > 0) {
+                    id = result[0].id
+                    connection.query(`SELECT * FROM groupy WHERE nazwa = '${nazwa}'`, function (err, res1) {
+                        if (Object.keys(res1).length > 0) {
+                            var id_grupy = res1[0].id
+                            connection.query(`UPDATE users SET id_grupy = ${id_grupy} WHERE login = '${cookie}'`, function (err, res2) {
+                                if (err) throw err
+                                res.redirect('/')
+                            })
+                        } else {
+                            connection.query(`INSERT INTO groupy (nazwa, id_zalozyciela) VALUES ('${nazwa}', ${id})`, function (err, res1) {
+                                connection.query(`SELECT id FROM groupy WHERE nazwa = '${nazwa}' AND id_zalozyciela = ${id}`, function (err, res2) {
+                                    if (Object.keys(result).length > 0) {
+                                        idG = res2[0].id
+                                        connection.query(`UPDATE users SET id_grupy = ${idG} WHERE login = '${cookie}'`, function (err, res3) {
+                                            if (err) throw err
+                                            res.redirect('/')
+                                        })
+                                    }
+                                })
+                            })
+                        }
+                    })
+                }
+            })
+    } else {
+        res.redirect('/login')
+    }
+})
 
 
 
@@ -70,10 +145,7 @@ connection.connect(function (err) {
 // app.listen(port, () => {
 //     console.log(`Serwer działa na http://localhost:${port}`);
 // });
-connection.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
+
 const path = require('path')
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -117,7 +189,7 @@ app.post('/register', urlencodedParser, (req, res) => {
 })
 
 app.get('/', (req, res) => {
-  var cookie
+  /*var cookie
   if (req.cookies['user']) {
     cookie = req.cookies['user']
     var wyswietl = "<html><head><title>Zagrozenia</title></head><body>"
@@ -136,7 +208,8 @@ app.get('/', (req, res) => {
     })
   } else {
     res.redirect('/login')
-  }
+  } */
+  res.render('index.ejs')
 })
 
 app.post("/login", urlencodedParser, (req, res) => {
