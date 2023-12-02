@@ -1,12 +1,97 @@
 <!DOCTYPE html>
 <html lang="pl">
-    <head>
-        <title>Index</title>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="index.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <a href="logout">Wyloguj</a>
-    </body>
+<head>
+    <title>Index</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body>
+    <nav>
+        <a href="map">Zagrożenia</a>
+        <p>●</p>
+        <a href="pierwszaPomoc">Pierwsza pomoc</a>
+        <p>●</p>
+        <a href="grupy">Wolontariaty</a>
+        <p>●</p>
+        <a href="donations">Donacje</a>
+    </nav>
+    <div class="userpanel">
+        <a href="logout"><p>Wyloguj</p></a>
+        <a href="profile"><img src="images/profile_blank.webp" width="50px" style="border-radius: 50%;"></a>
+    </div>
+    <div>
+        <div class="slideshow">
+            <div>
+                <h1 id="header">Monitoruj zagrożenia wokół ciebie</h1>
+                <a id="link" href="zagrozenia"><button>Sprawdź</button></a>
+            </div>
+            <div>
+                <img id="image" src="images/zagrozenia.svg" alt="Zagrożenia">
+            </div>
+        </div>
+        <div id="thumbnails" class="thumbnails"></div>
+    </div>
+
+    <script>
+        const galleryData = [
+            { header: "Monitoruj zagrożenia wokół ciebie", link: "map", image: "images/zagrozenia.svg" },
+            { header: "Jak udzielać pierwszej pomocy?", link: "pierwszaPomoc", image: "images/firstaid.svg" },
+            { header: "Stań się członkiem wolontariatu", link: "grupy", image: "images/wolontariat.svg" },
+            { header: "Wspomóż nasze działania finansowo", link: "donations", image: "images/donacje.svg" }
+            // Dodaj kolejne elementy galerii według potrzeb
+        ];
+
+        let currentIndex = 0;
+
+        function updateGallery() {
+            const currentData = galleryData[currentIndex];
+            const slideshowDivs = document.querySelectorAll('.slideshow div');
+            const thumbnailsContainer = document.getElementById('thumbnails');
+
+            slideshowDivs.forEach(div => {
+                div.classList.remove('visible');
+            });
+
+            setTimeout(() => {
+                document.getElementById("header").textContent = currentData.header;
+                document.getElementById("link").href = currentData.link;
+                document.getElementById("image").src = currentData.image;
+
+                slideshowDivs.forEach(div => {
+                    div.classList.add('visible');
+                });
+            }, 500);
+
+            updateThumbnails(thumbnailsContainer, currentIndex);
+            currentIndex = (currentIndex + 1) % galleryData.length;
+        }
+
+        function updateThumbnails(container, currentIndex) {
+    container.innerHTML = ''; // Wyczyść poprzednie znaczniki
+
+    galleryData.forEach((data, index) => {
+        const thumbnail = document.createElement('div');
+        thumbnail.classList.add('thumbnail');
+
+        // Sprawdź, czy to jest aktualny indeks i dodaj klasę 'active'
+        if (index === currentIndex) {
+            thumbnail.classList.add('active');
+        }
+
+        thumbnail.addEventListener('click', () => jumpToIndex(index));
+        container.appendChild(thumbnail);
+    });
+}
+
+
+        function jumpToIndex(index) {
+            currentIndex = index;
+            updateGallery();
+        }
+
+        setInterval(updateGallery, 5000);
+        window.onload = updateGallery;
+    </script>
+</body>
 </html>

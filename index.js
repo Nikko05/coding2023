@@ -26,6 +26,20 @@ const connection = mysql.createConnection({
 
 
 
+app.get("/earthquakes", (req, res) => {
+  axios.get("https://www.fema.gov/api/open/v2/FemaRegions")
+    .then(response => {
+      console.log('Dane z API:', response.data);
+      res.json(response.data); // Wysyłanie danych z API jako odpowiedź
+    })
+    .catch(error => {
+      console.error('Błąd podczas pobierania danych:', error.message);
+      res.status(500).json({ error: 'Błąd podczas pobierania danych z API FEMA' });
+    });
+});
+
+
+
 app.get('/donations', (req, res) => {
     if (req.cookies['user']) {
         res.render('donations.ejs');
@@ -313,14 +327,8 @@ app.post("/register", urlencodedParser, (req, res) => {
 })
 
 
-
 app.get('/', (req, res) => {
-    if (req.cookies['user']) {
-        res.render('index.ejs')
-    } else {
-        res.redirect('/login')
-    }
-  /*var cookie
+  var cookie
   if (req.cookies['user']) {
     cookie = req.cookies['user']
     var wyswietl = "<html><head><title>Zagrozenia</title></head><body>"
@@ -339,8 +347,7 @@ app.get('/', (req, res) => {
     })
   } else {
     res.redirect('/login')
-  } */
-  res.render('index.ejs')
+  }
 })
 
 app.post("/login", urlencodedParser, (req, res) => {
@@ -355,7 +362,7 @@ app.post("/login", urlencodedParser, (req, res) => {
             res.cookie("user", login)
             res.redirect("/")
           } else {
-            res.send("Złe hasło")
+            
           }
         })
       } else {
@@ -363,8 +370,6 @@ app.post("/login", urlencodedParser, (req, res) => {
       }
     })
   }
-
-
   )
 })
 app.get('/logout', (req, res) => {
@@ -421,6 +426,10 @@ app.post("/profile", urlencodedParser, (req, res) => {
 })
 
 //do wyświertlania
+
+app.get('/firstAid', (req, res) => {
+  res.render('pierwszaPomoc.ejs')
+})
 
 app.listen(port, () => {
 

@@ -12,7 +12,7 @@
         <div class="left-container">
             <div>
             <h2>Witaj na <br> App Name</h2>
-            <h3>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h3>
+            <h3>Jesteśmy zawsze obok, gotowi pomóc w Twoich najtrudniejszych chwilach.</h3>
           </div>
           <a href="register" class="register">Stwórz swoje konto</a>
           <div class="containerBottomArrow" onclick="scrollToNextSection()">
@@ -22,10 +22,10 @@
         <div class="right-container">
           <h1 class="title">Logowanie</h1>
           <div class="subtitle">
-            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of
-            type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-            electronic typesetting, remaining essentially unchanged.
+            Działania humanitarne to "pierwsza pomoc dla świata" spontaniczne i serdeczne reakcje na problemy, zawsze gotowe
+            dostarczyć pomocy, nadzieję i uśmiech tym, którzy jej potrzebują, bez względu na okoliczności. Nie bój nie pomóc sobie lub Twoim najbliszym.
           </div>
+          <div class="error">*Błędne hasło lub login</div>
           <form method="post" action="/login">
             <div class="input-container">
               <label for="login">Login</label>
@@ -35,7 +35,7 @@
               <label for="password">Hasło</label>
               <input type="password" name="pass" id="password" placeholder="Hasło" />
             </div>
-              <button type="submit">Zaloguj</button>
+              <button type="submit" onclick="errorPassword">Zaloguj</button>
           </form>
         </div>
       </div>
