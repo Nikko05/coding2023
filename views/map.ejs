@@ -87,14 +87,57 @@
                 "pk.eyJ1Ijoic2ViaW5obyIsImEiOiJjbDB4dGQzdGEwOWNtM2lvMWNqNjR1NzloIn0.q9JyLxHUFAS6Mbe_8nxbzQ",
             }
           ).addTo(map);
+          markers = [];
+          function danezbazy() {
+            fetch("http://localhost:3000/baza", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({}),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                var danezbazy = data.danezbazy;
+                console.log("Dane z bazy:", danezbazy);
+                var iloscRekordow = danezbazy.length;
+                console.log("Ilość rekordów w danezbazy:", iloscRekordow);
+                for (var i = 0; i < danezbazy.length; i++) {
+                  var record = danezbazy[i];
+                  var formattedData = record.place;
+                  var latitude = record.latitude;
+                  var longitude = record.longitude;
+                  var typeOfDanger = record.type;
+                  var descriptionOfDanger = record.description;
 
-          var markers = [];
+                  // Twórz nowy marker i dodaj go do mapy
+                  var marker = L.marker([latitude, longitude]).addTo(map);
+                  marker
+                    .bindPopup(
+                      `<b>Adres:</b> ${formattedData}<br><b>Szerokość geograficzna:</b> ${latitude}<br><b>Długość geograficzna</b> ${longitude}
+      <br><b>Rodzaj zagrożenia:</b>${typeOfDanger}<br><b>Opis zagrożenia:</b>${descriptionOfDanger}`
+                    )
+                    .openPopup();
+
+                  // Dodaj marker do tablicy markers
+                  markers.push(marker);
+                }
+              })
+              .catch((error) => {
+                console.error(
+                  "Błąd przesyłania danych geograficznych:",
+                  error.message
+                );
+              });
+          }
+
+          danezbazy();
+
           function script() {
             var typeOfDanger = document.getElementById("typeOfDanger").value;
             var descriptionOfDanger = document.getElementById(
               "descriptionOfDanger"
             ).value;
-
 
             if (navigator.geolocation) {
               navigator.geolocation.getCurrentPosition(function (position) {
@@ -119,7 +162,7 @@
                   latitude,
                   longitude,
                   typeOfDanger,
-                  descriptionOfDanger
+                  descriptionOfDanger,
                 }),
               })
                 .then((response) => response.json())
@@ -127,22 +170,24 @@
                   var formattedDataJS = data.formattedData;
                   var latitudeJS = data.latitude;
                   var longitudeJS = data.longitude;
+                  var danezbazy = data.danezbazy; // Odbiór zmiennej danezbazy
 
                   console.log("Formatted Data in JS:", formattedDataJS);
                   console.log("Latitude in JS:", latitudeJS);
                   console.log("Longitude in JS:", longitudeJS);
+                  console.log("Dane z bazy:", danezbazy);
 
                   // Usuń istniejące markery
-                  markers.forEach((marker) => marker.remove());
+                  //markers.forEach((marker) => marker.remove());
                   markers = [];
 
                   // Dodaj nowy marker do mapy z popup
                   var marker = L.marker([latitude, longitude]).addTo(map);
                   marker
                     .bindPopup(
-                      `<b>Formatted Data:</b> ${formattedDataJS}<br><b>Latitude:</b> ${latitudeJS}<br><b>Longitude:</b> ${longitudeJS}
-                      <br><b>Type of Danger</b>${typeOfDanger}<br><b>Description of Danger</b>${descriptionOfDanger}
-                      `
+                      `<b>Adres:</b> ${formattedDataJS}<br><b>Szerokość geograficzna:</b> ${latitudeJS}<br><b>Długość geograficzna</b> ${longitudeJS}
+                            <br><b>Rodzaj zagrożenia:</b>${typeOfDanger}<br><b>Opis zagrożenia:</b>${descriptionOfDanger}
+                            `
                     )
                     .openPopup();
                   markers.push(marker);
@@ -156,9 +201,6 @@
                   );
                 });
             }
-          }
-          function dane(){
-            
           }
         </script>
       </div>
