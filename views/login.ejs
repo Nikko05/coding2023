@@ -5,18 +5,19 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="style.css">
         <link rel="stylesheet" href="login.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter+Tight&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
     </head>
     <body>
       <div class="main-container">
         <div class="left-container">
             <div>
-            <h2>Witaj na App Name</h2>
+            <h2>Witaj na <br> App Name</h2>
             <h3>Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</h3>
           </div>
           <a href="register" class="register">Stwórz swoje konto</a>
+          <div class="containerBottomArrow" onclick="scrollToNextSection()">
+            <img src="icons/arrow-bottom.svg" alt="">
+          </div>
         </div>
         <div class="right-container">
           <h1 class="title">Logowanie</h1>
@@ -34,9 +35,16 @@
               <label for="password">Hasło</label>
               <input type="password" name="pass" id="password" placeholder="Hasło" />
             </div>
-              <button type="submit">Zarejestruj</button>
+              <button type="submit">Zaloguj</button>
           </form>
         </div>
       </div>
+
+      <script>
+        function scrollToNextSection() {
+          const nextSection = document.querySelector('.right-container');
+          nextSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      </script>
     </body>
 </html>
