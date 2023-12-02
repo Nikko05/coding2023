@@ -58,8 +58,8 @@ h1 {
 form {
     display: flex;
     flex-flow: column wrap;
-    height: 60%;
-    justify-content: center;
+    height: auto;
+    justify-content: space-between;
     align-items: center;
     padding: 0 10%;
 }
@@ -73,13 +73,13 @@ form div {
   width: 100%;
 }
 
-input, select {
-    padding: 10px 15px;
+input, select, textarea {
+    padding: 10px;
     color: #1F1F1F;
     font-size: 16px;
     font-weight: 400;
     text-align: left;
-    margin: 15px 0px;
+    margin: 5px 0px;
     border: 1.5px solid #B3B3B3;
     border-radius: 4px;
 }

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="reportEvent.css">
+</head>
+<body>
+  <div class="main-container">
+    <div class="left-container">
+      <h1 class="title">Zgłaszanie zagrożenia</h1>
+      <div class="subtitle">Zgłaszanie zagrożeń to kluczowy krok w zachowaniu bezpieczeństwa. Jeśli dostrzeżesz potencjalne ryzyko, nie wahaj się
+      zgłosić sytuacji odpowiednim organom lub osobom. Twoje zgłoszenie może przyczynić się do szybkiego reagowania i
+      eliminacji potencjalnych problemów.</div>
+      <form action="">
+        <div class="input-container">
+          <label class="" for="adressOfDanger">Podaj adres zagrożenia</label>
+          <input type="text" placeholder="Adres zagrożenia" name="" id="adressOfDanger">
+        </div>
+        <div class="input-container">
+          <label class="" for="typeOfDanger">Podaj rodzaj zagrożenia</label>
+          <select type="text" name="" id="typeOfDanger">
+            <option value="" disabled selected hidden>-- Wybierz rodzaj zagrożenia</option>
+            <option value="">Klęski Żywiołowe</option>
+            <option value="">Konflikty Zbrojne</option>
+            <option value="">Kryzysy Migracyjne</option>
+            <option value="">Kryzysy Zdrowotne</option>
+            <option value="">Kryzysy Żywnościowe</option>
+          </select>
+        </div>
+        <div class="input-container">
+          <label class="" for="descriptionOfDanger">Podaj opis zagrożenia *</label>
+          <textarea type="text" placeholder="Opis zagrożenia" name="" id="descriptionOfDanger"></textarea>
+        </div>
+        <button type="submit">Zgłoś</button>
+      </form>
+    </div>
+    <div class="right-container">
+      <!-- mapa -->
+    </div>
+  </div>
+</body>
+</html>

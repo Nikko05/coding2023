@@ -8,11 +8,20 @@
 }
 
 .left-container form {
-  height: 70%;
+  height: 100%;
+}
+
+.left-container {
+  padding: 3% 2%;
 }
 
 select, input {
   width: 100%;
+  font-size: 14px;
+}
+
+label {
+  font-size: 16px;
 }
 
 input[type = 'submit'] {
@@ -26,4 +35,9 @@ input[type = 'submit'] {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+#descriptionOfDanger {
+  height: 100px;
+  margin-bottom: 20px;
 }
