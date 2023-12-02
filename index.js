@@ -215,7 +215,7 @@ app.post('/napiszPost', (req, res) => {
                 var date = year + "-" + month + "-" + day
                 connection.query(`INSERT INTO posts (autor, tresc, id_grupy, id_autora, data) VALUES ('${cookie}', '${text}', ${id_grupy}, ${id}, '${date}')`, function (err, result) {
                     if (err) throw err
-                    res.redirect('grupyCzlonek')
+                    res.redirect('/grupyCzlonek')
                 })
             }
         })
@@ -237,7 +237,7 @@ app.post('/grupy', (req, res) => {
                             var id_grupy = res1[0].id
                             connection.query(`UPDATE users SET id_grupy = ${id_grupy} WHERE login = '${cookie}'`, function (err, res2) {
                                 if (err) throw err
-                                res.redirect('/')
+                                res.redirect('/grupyCzlonek')
                             })
                         } else {
                             connection.query(`INSERT INTO groupy (nazwa, id_zalozyciela) VALUES ('${nazwa}', ${id})`, function (err, res1) {
@@ -246,7 +246,7 @@ app.post('/grupy', (req, res) => {
                                         idG = res2[0].id
                                         connection.query(`UPDATE users SET id_grupy = ${idG} WHERE login = '${cookie}'`, function (err, res3) {
                                             if (err) throw err
-                                            res.redirect('/')
+                                            res.redirect('/grupyCzlonek')
                                         })
                                     }
                                 })
@@ -306,7 +306,7 @@ app.post("/register", urlencodedParser, (req, res) => {
     `SELECT id FROM users WHERE login = '${login}';`,
     function (err, result, fields) {
       if (Object.keys(result).length > 0) {
-        res.send("Juz istnieje taki uzytkownik");
+        res.render('register-error.ejs', {text: "Juz istnieje taki uzytkownik"})
       } else {
         if (pass1 == pass2) {
           bcrypt.hash(pass1, 10, function (err, hash) {
@@ -319,7 +319,7 @@ app.post("/register", urlencodedParser, (req, res) => {
             );
           });
         } else {
-          res.send("Hasła się różnią");
+          res.render('register-error.ejs', {text : "Hasła się różnią"});
         }
       }
     }
@@ -328,23 +328,9 @@ app.post("/register", urlencodedParser, (req, res) => {
 
 
 app.get('/', (req, res) => {
-  var cookie
+
   if (req.cookies['user']) {
-    cookie = req.cookies['user']
-    var wyswietl = "<html><head><title>Zagrozenia</title></head><body>"
-    connection.query(`SELECT * FROM dangers ORDER BY data DESC;`, function (err, result, fields) {
-      if (Object.keys(result).length > 0) {
-        for (var i = 0; i < Object.keys(result).length; i++) {
-          wyswietl += "<div>"
-          wyswietl += "<p>" + result[i].lokacja + "</p>"
-          wyswietl += "<p>" + result[i].data + "</p>"
-          wyswietl += "<p>" + result[i].rodzaj + "</p>"
-          wyswietl += "<p>" + result[i].opis + "</p></div>"
-        }
-      }
-      wyswietl += "</body></html>"
-      res.send(wyswietl)
-    })
+    res.render('index.ejs')
   } else {
     res.redirect('/login')
   }
@@ -362,11 +348,11 @@ app.post("/login", urlencodedParser, (req, res) => {
             res.cookie("user", login)
             res.redirect("/")
           } else {
-            
+            res.render('login-error.ejs', {text : "Błędne hasło"})
           }
         })
       } else {
-        res.send("Nie ma takiego uzytkownika")
+        res.render('login-error.ejs', {text : "Nie ma takiego uzytkownika"})
       }
     })
   }
@@ -427,8 +413,13 @@ app.post("/profile", urlencodedParser, (req, res) => {
 
 //do wyświertlania
 
-app.get('/firstAid', (req, res) => {
-  res.render('pierwszaPomoc.ejs')
+app.get('/pierwszaPomoc', (req, res) => {
+    if (req.cookies['user']) {
+        res.render('pierwszaPomoc.ejs')
+    } else {
+        res.redirect('/login')
+    }
+
 })
 
 app.listen(port, () => {

@@ -11,6 +11,18 @@ h1 {
   padding: 0;
 }
 
+.error {
+  width: 100%;
+  padding: 0 0;
+  font-size: 20px;
+  color: red;
+  display: none;
+}
+
+.isVisible {
+  display: flex;
+}
+
 button::after {
   display: none;
 }

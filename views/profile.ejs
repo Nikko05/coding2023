@@ -5,37 +5,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profil</title>
+    <link rel="stylesheet" href="profile.css" />
   </head>
   <body>
-    <!-- air jumper ten div jest specjalnie ustawony z tymi arginesami żeby było tło idealnie -->
-    <div
-      style="
-        border-radius: 50%;
-        background-color: red;
-        width: 350px;
-        height: 350px;
-      "
-      id="profileColor"
-    >
-      <svg
-        width="104%"
-        height="104%"
-        viewBox="0 0 350 350"
-        style="margin-left: -2px; margin-top: -1px"
-      >
-        <path
-          fill="#DDD"
-          d="M169,0.5a169,169 0 1,0 2,0zM169,86a76,76 0 1 1-2,0zM57,287q27-35 67-35h92q40,0 67,35a164,164 0 0,1-226,0"
-        />
-      </svg>
+    <div class="main-container">
+      <!-- air jumper ten div jest specjalnie ustawony z tymi arginesami żeby było tło idealnie -->
+      <div class="left">
+        <div
+          style="
+            border-radius: 50%;
+            background-color: red;
+            width: 350px;
+            height: 350px;
+          "
+          id="profileColor"
+        >
+          <svg
+            width="104%"
+            height="104%"
+            viewBox="0 0 350 350"
+            style="margin-left: -2px; margin-top: -1px"
+          >
+            <path
+              fill="#DDD"
+              d="M169,0.5a169,169 0 1,0 2,0zM169,86a76,76 0 1 1-2,0zM57,287q27-35 67-35h92q40,0 67,35a164,164 0 0,1-226,0"
+            />
+          </svg>
+        </div>
+        <label class="color">Change color:</label>
+        <input type="range" id="hueInput" class="range min="0" max="360"
+        value="0" />
+      </div>
+      <div class="main">
+        <p class="name"><%= imie %> <%= nazwisko %></p>
+        <p class="handle">@<%= login %></p>
+        <p class="mail"><%= email %></p>
+      </div>
     </div>
-
-    <p><%= imie %> <%= nazwisko %></p>
-    <p><%= email %></p>
-    <p>@<%= login %></p>
-
-    <input type="range" id="hueInput" min="0" max="360" value="0" />
-
     <script>
       function getCookie(cname) {
         let name = cname + "=";
@@ -65,7 +71,6 @@
 
         // Update color when the input value changes
         hueInput.addEventListener("input", updateColor);
-
         // Function to update color based on the input value
         function updateColor() {
           // Get hue value from the input
@@ -76,13 +81,15 @@
 
           // Convert RGB to hex
           color = rgbToHex(rgb[0], rgb[1], rgb[2]);
-          
 
           if (xd == 0) {
             xd++;
             console.log(xd);
           } else {
+            var r = document.querySelector(":root");
+            r.style.setProperty("--color", `${color}`);
             document.getElementById("profileColor").style.background = color;
+            hueInput.style.setProperty("--thumb-color", color);
             document.cookie = `themeColor = ${color}; expires=Thu, 18 Dec 2077 12:00:00 UTC`;
           }
         }

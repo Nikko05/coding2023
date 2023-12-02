@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="login.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+      <div class="main-container">
+        <div class="left-container">
+            <div>
+            <h2>Witaj na <br> App Name</h2>
+            <h3>Jesteśmy zawsze obok, gotowi pomóc w Twoich najtrudniejszych chwilach.</h3>
+          </div>
+          <a href="register" class="register">Stwórz swoje konto</a>
+          <div class="containerBottomArrow" onclick="scrollToNextSection()">
+            <img src="icons/arrow-bottom.svg" alt="">
+          </div>
+        </div>
+        <div class="right-container">
+          <h1 class="title">Logowanie</h1>
+          <div class="subtitle">
+            Działania humanitarne to "pierwsza pomoc dla świata" spontaniczne i serdeczne reakcje na problemy, zawsze gotowe
+            dostarczyć pomocy, nadzieję i uśmiech tym, którzy jej potrzebują, bez względu na okoliczności. Nie bój nie pomóc sobie lub Twoim najbliszym.
+          </div>
+          <div class="error isVisible"><%= text %></div>
+          <form method="post" action="/login">
+            <div class="input-container">
+              <label for="login">Login</label>
+              <input type="text" id="login" name="login" placeholder="Login" />
+            </div>
+            <div class="input-container">
+              <label for="password">Hasło</label>
+              <input type="password" name="pass" id="password" placeholder="Hasło" />
+            </div>
+              <button type="submit" onclick="errorPassword">Zaloguj</button>
+          </form>
+        </div>
+      </div>
+
+      <script>
+        function scrollToNextSection() {
+          const nextSection = document.querySelector('.right-container');
+          nextSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      </script>
+    </body>
+</html>
