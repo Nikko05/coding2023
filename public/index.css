@@ -1,0 +1,152 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter Tight', sans-serif;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    background-color: #F9F7F8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav {
+  display: flex;
+  flex-flow: row nowrap;
+  height: 50px;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.userpanel {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.userpanel > * {
+  margin: 10px;
+}
+
+a {
+  text-decoration: none;
+  color: #1F1F1F;
+}
+
+nav > * {
+  margin: 10px;
+}
+
+h1 {
+    font-size: 100px;
+    color: #1F1F1F;
+    font-weight: bold;
+    text-align: left;
+    margin: 40px 0;
+    line-height: 100%;
+}
+
+.slideshow {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.slideshow div {
+  width: 50%;
+  padding: 4%;
+  display: flex;
+  flex-flow: column wrap;
+  justify-content: space-evenly;
+}
+
+.slideshow img {
+  height: 100%;
+}
+
+.slideshow div {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.slideshow div:not(.visible) {
+  opacity: 0;
+}
+
+button {
+    padding: 10px 10%;
+    background-color: #1F1F1F;
+    color: white;
+    font-size: 26px;
+    border-radius: 4px;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    font-weight: 600;
+    width: 300px;
+    transition: all 0.3s ease;
+    box-shadow: 0px 0px 0px #1F1F1F;
+}
+
+button:hover {
+  cursor: pointer;
+  background-color: rgb(177, 17, 17);
+  transform: translateY(-10px);
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnails {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.thumbnail {
+  width: 10px;
+  height: 10px;
+  background-color: #bbb;
+  border-radius: 50%;
+  margin: 20px 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.thumbnail.active {
+  background-color: #717171;
+}
+
+@media (max-width: 800px) {
+  h1 {
+    font-size: 36px;
+  }
+}
