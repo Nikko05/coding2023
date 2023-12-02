@@ -4,12 +4,19 @@ const port = 3000
 const mysql = require('mysql2')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
+const stripe = require('stripe')('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');
 const bcrypt = require("bcrypt")
+require("dotenv").config(); 
+
+
+
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 app.set('view-engine', 'ejs')
 app.use(cookieParser())
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
     host: 'roundhouse.proxy.rlwy.net',
@@ -19,6 +26,17 @@ const connection = mysql.createConnection({
     port: 42881
 });
 
+
+app.get('/donations', (req, res) => {
+  res.render('donations.ejs', { stripePublicKey: process.env.STRIPE_PUBLIC_KEY });
+});
+
+
+
+
+// app.listen(port, () => {
+//     console.log(`Serwer działa na http://localhost:${port}`);
+// });
 connection.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
@@ -66,8 +84,23 @@ app.post('/register', urlencodedParser, (req,res) => {
 })
 
 app.get('/', (req, res) => {
+    var cookie
     if (req.cookies['user']) {
-        res.render('index.ejs')
+        cookie = req.cookies['user']
+        var wyswietl = "<html><head><title>Zagrozenia</title></head><body>"
+        connection.query(`SELECT * FROM dangers ORDER BY data DESC;`, function(err, result, fields) {
+            if (Object.keys(result).length > 0){
+                for (var i = 0; i < Object.keys(result).length; i++) {
+                    wyswietl += "<div>"
+                    wyswietl += "<p>" + result[i].lokacja + "</p>"
+                    wyswietl += "<p>" + result[i].data + "</p>"
+                    wyswietl += "<p>" + result[i].rodzaj + "</p>"
+                    wyswietl += "<p>" + result[i].opis + "</p></div>"
+                }
+            }
+            wyswietl += "</body></html>"
+            res.send(wyswietl)
+        })
     } else {
         res.redirect('/login')
     }
@@ -102,8 +135,24 @@ app.post("/login", urlencodedParser, (req, res)=>{
     res.redirect('/login')
 })
 
-app.get('/report', (req, res) => {
-  res.render('reportEvent.ejs')
+app.get("/profile", urlencodedParser, (req, res)=>{
+  res.render("profile.ejs");
+})
+
+
+app.post("/profile", urlencodedParser, (req, res)=>{
+  let name = req.body.name;
+  let surname = req.body.surname;
+  let birthDate = req.body.birthDate;
+  let bio = req.body.bio;
+  let bloodType = req.body.bloodType;
+
+  res.redirect("/");
+})
+
+
+app.get('/firstaid', (req, res) => {
+    res.render('pierwszaPomoc.ejs')
 })
 
 app.listen(port, () => {
