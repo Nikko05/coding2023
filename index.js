@@ -7,6 +7,8 @@ const cookieParser = require("cookie-parser")
 const stripe = require('stripe')('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');
 const bcrypt = require("bcrypt")
 
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
+
 
 app.set('view-engine', 'ejs')
 app.use(cookieParser())
@@ -29,9 +31,9 @@ app.get('/donations', (req, res) => {
 
 
 
-app.listen(port, () => {
-    console.log(`Serwer działa na http://localhost:${port}`);
-});
+// app.listen(port, () => {
+//     console.log(`Serwer działa na http://localhost:${port}`);
+// });
 connection.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
