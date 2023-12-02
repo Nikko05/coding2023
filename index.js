@@ -8,7 +8,7 @@ const stripe = require('stripe')('sk_live_51OIcBqBMijEf97hrq9g0efyfAmaivN2aa988l
 const bcrypt = require("bcrypt")
 require("dotenv").config(); 
 
-
+const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 app.set('view-engine', 'ejs')
@@ -32,9 +32,6 @@ app.get('/donations', (req, res) => {
 
 
 
-app.listen(port, () => {
-    console.log(`Serwer działa na http://localhost:${port}`);
-});
 connection.connect(function(err) {
     if (err) throw err;
     console.log("Connected!");
