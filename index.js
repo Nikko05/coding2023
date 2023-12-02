@@ -7,10 +7,12 @@ const cookieParser = require("cookie-parser")
 const stripe = require('stripe')('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');
 const bcrypt = require("bcrypt")
 const axios = require('axios');
-
-
+require("dotenv").config(); 
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
+
+
+
 app.set('view-engine', 'ejs')
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -65,6 +67,13 @@ connection.connect(function (err) {
   if (err) throw err;
   console.log("Connected!");
 });
+// app.listen(port, () => {
+//     console.log(`Serwer działa na http://localhost:${port}`);
+// });
+connection.connect(function(err) {
+    if (err) throw err;
+    console.log("Connected!");
+  });
 const path = require('path')
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -174,6 +183,10 @@ app.post("/profile", urlencodedParser, (req, res) => {
   res.redirect("/");
 })
 
+
+app.get('/firstaid', (req, res) => {
+    res.render('pierwszaPomoc.ejs')
+})
 
 app.listen(port, () => {
 

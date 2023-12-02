@@ -18,7 +18,7 @@
     "fs": "^0.0.1-security",
     "mysql": "^2.18.1",
     "mysql2": "^3.6.5",
-    "nodemon": "^3.0.1",
+    "nodemon": "^3.0.2",
     "openai": "^4.20.1",
     "readline-sync": "^1.4.10",
     "stripe": "^14.7.0",
