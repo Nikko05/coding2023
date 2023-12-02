@@ -90,3 +90,47 @@ h1 {
     font-size: 24px;
   }
 }
+
+@media screen and (max-width: 420px) {
+  body {
+    padding: 0;
+    width: 100%;
+    height: auto;
+    background-color: white;
+  }
+
+  form {
+    width: 100%;
+  }
+
+  input {
+    font-size: 16px;
+    padding: 10px 14px;
+  }
+
+  label {
+    font-size: 18px;
+  }
+
+  h1 {
+    font-size: 46px;
+    width: 100%;
+    margin-top: 10%;
+  }
+
+  .main-container {
+    width: 100%;
+    margin: auto 0;
+    height: auto;
+    flex-direction: column;
+    box-shadow: none;
+  }
+
+  .left-container,
+  .right-container {
+    border-radius: 0;
+    height: 45vh;
+    width: 100%;
+    align-items: center;
+  }
+}
