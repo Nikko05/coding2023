@@ -11,6 +11,10 @@ h1 {
   padding: 0;
 }
 
+button::after {
+  display: none;
+}
+
 @media (max-width: 1000px) {
   .left-container, .right-container {
     padding: 15% 5%;
@@ -45,62 +49,18 @@ h1 {
   }
 }
 
-@media (max-width: 700px) {
-
-}
-
-@media screen and (max-width: 1000px) {
-  body {
-    padding: 10% 0;
-    height: 100%;
-    display: flex;
-    justify-items: center;
-    align-items: center;
-  }
-
-  h1 {
-    font-size: 58px;
-  }
-
-  .main-container {
-    flex-direction: column;
-    height: 100%;
-    padding: 5% 0;
-  }
-
-  .left-container,
-  .right-container {
-    width: 100%;
-    height: 50%;
-    padding: 0 10%;
-  }
-
-  .left-container {
-    border-radius: 10px 10px 0 0;
-    height: 50%;
-  }
-
-  input,
-  button {
-    font-size: 22px;
-    padding: 15px 20px;
-  }
-
-  label {
-    font-size: 24px;
-  }
-}
-
-@media screen and (max-width: 420px) {
+@media screen and (max-width: 420px) and (min-width: 400px) {
   body {
     padding: 0;
     width: 100%;
+    height: 100%;
     height: auto;
     background-color: white;
   }
 
   form {
     width: 100%;
+    padding: 0 5%;
   }
 
   input {
@@ -113,9 +73,8 @@ h1 {
   }
 
   h1 {
-    font-size: 46px;
+    font-size: 36px;
     width: 100%;
-    margin-top: 10%;
   }
 
   .main-container {
@@ -133,8 +92,11 @@ h1 {
     width: 100%;
     align-items: center;
   }
+}
 
-  .input-container {
-    
+@media screen and (max-width: 400) and (min-width: 280px) {
+  input {
+    font-size: 12px;
+    padding: 8px 10px;
   }
 }

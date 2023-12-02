@@ -1,8 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Lokalizacja</title>
-    <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="reportEvent.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter+Tight&display=swap"
+      rel="stylesheet"
+    />
     <link
       rel="stylesheet"
       href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -15,85 +23,193 @@
       crossorigin=""
     ></script>
   </head>
+
   <body>
-    <div id="map" style="height: 500px; width: 100%"></div>
-    <script>
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
-          var latitude = position.coords.latitude;
-          var longitude = position.coords.longitude;
-
-          console.log("Twoja aktualna lokalizacja:");
-          console.log("Szerokość geograficzna:", latitude);
-          console.log("Długość geograficzna:", longitude);
-
-          sendLocationToServer(latitude, longitude);
-        });
-      }
-
-      function sendLocationToServer(latitude, longitude) {
-        fetch("http://localhost:3000/map", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ latitude, longitude }),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            var formattedDataJS = data.formattedData;
-            var latitudeJS = data.latitude;
-            var longitudeJS = data.longitude;
-
-            console.log("Formatted Data in JS:", formattedDataJS);
-            console.log("Latitude in JS:", latitudeJS);
-            console.log("Longitude in JS:", longitudeJS);
-
-            var map = L.map("map").setView([latitude, longitude], 15);
-            L.tileLayer(
-              "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2ViaW5obyIsImEiOiJjbDB4dGQzdGEwOWNtM2lvMWNqNjR1NzloIn0.q9JyLxHUFAS6Mbe_8nxbzQ",
-              {
-                attribution:
-                  'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-                maxZoom: 20,
-                id: "mapbox/streets-v11",
-                tileSize: 512,
-                zoomOffset: -1,
-                accessToken:
-                  "pk.eyJ1Ijoic2ViaW5obyIsImEiOiJjbDB4dGQzdGEwOWNtM2lvMWNqNjR1NzloIn0.q9JyLxHUFAS6Mbe_8nxbzQ",
-              }
-            ).addTo(map);
-
-            // Dodaj marker do mapy
-            var marker = L.marker([latitude, longitude]).addTo(map);
-
-            function myFunction(marker) {
-              if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(geoSucc);
-              }
-
-              function geoSucc(position) {
-                var latitude = marker["_latlng"]["lat"];
-                var longitude = marker["_latlng"]["lng"];
-                fetch(
-                  `https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=fb79dc8c719d42a0ba059f4831c8aaf8`
-                )
-                  .then((response) => response.json())
-                  .then((data) =>
-                    marker
-                      .bindPopup(data["results"][0]["formatted"])
-                      .openPopup()
-                  );
-              }
+    <div class="main-container">
+      <div class="left-container">
+        <h1 class="title">Zgłaszanie zagrożenia</h1>
+        <div class="subtitle">
+          Zgłaszanie zagrożeń to kluczowy krok w zachowaniu bezpieczeństwa.
+          Jeśli dostrzeżesz potencjalne ryzyko, nie wahaj się zgłosić sytuacji
+          odpowiednim organom lub osobom. Twoje zgłoszenie może przyczynić się
+          do szybkiego reagowania i eliminacji potencjalnych problemów.
+        </div>
+        <form>
+          <div class="input-container">
+            <label class="" for="typeOfDanger" required
+              >Podaj rodzaj zagrożenia</label
+            >
+            <select type="text" name="" id="typeOfDanger">
+              <option value="" disabled selected hidden required>
+                -- Wybierz rodzaj zagrożenia
+              </option>
+              <option value="Klęska Żywiołowa">Klęska Żywiołowa</option>
+              <option value="Konflikt Zbrojny">Konflikt Zbrojny</option>
+              <option value="Kryzys Migracyjny">Kryzys Migracyjny</option>
+              <option value="Kryzys Zdrowotny">Kryzys Zdrowotny</option>
+              <option value="Kryzys Żywnościowy">Kryzys Żywnościowy</option>
+              <option value="Kryzys Żywnościowy">Zanieczyszczenie Środowiska</option>
+              <option value="Kryzys Żywnościowy">Zagrożenia Klimatyczne</option>
+              <option value="Kryzys Żywnościowy">Niewłaściwe Warunki Życia</option>
+              <option value="Kryzys Żywnościowy">Kryzysy Ekonomiczne</option>
+              <option value="Kryzys Żywnościowy">Zagrożenia dla Praw Człowieka</option>
+              <option value="Kryzys Żywnościowy">Niewłaściwe Warunki Edukacyjne</option>
+              <option value="Kryzys Żywnościowy">Zagrożenia Dzieciństwa</option>
+              <option value="Kryzys Żywnościowy">Inne</option>
+            </select>
+          </div>
+          <div class="input-container">
+            <label class="" for="descriptionOfDanger"
+              >Podaj opis zagrożenia *</label
+            >
+            <textarea
+              type="text"
+              placeholder="Opis zagrożenia"
+              name=""
+              id="descriptionOfDanger"
+            ></textarea>
+          </div>
+          <button
+            type="submit"
+            value="Zgłoś"
+            onclick="script()">Zgłoś</button>
+        </form>
+      </div>
+      <div class="right-container">
+        <!-- mapa -->
+        <div id="map" class="map"></div>
+        <script>
+          let map = L.map("map").setView([49.6333308, 20.7166638], 5);
+          L.tileLayer(
+            "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic2ViaW5obyIsImEiOiJjbDB4dGQzdGEwOWNtM2lvMWNqNjR1NzloIn0.q9JyLxHUFAS6Mbe_8nxbzQ",
+            {
+              attribution:
+                'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+              maxZoom: 20,
+              id: "mapbox/streets-v11",
+              tileSize: 512,
+              zoomOffset: -1,
+              accessToken:
+                "pk.eyJ1Ijoic2ViaW5obyIsImEiOiJjbDB4dGQzdGEwOWNtM2lvMWNqNjR1NzloIn0.q9JyLxHUFAS6Mbe_8nxbzQ",
             }
-          })
-          .catch((error) => {
-            console.error(
-              "Błąd przesyłania danych geograficznych:",
-              error.message
-            );
-          });
-      }
-    </script>
+          ).addTo(map);
+          markers = [];
+          function danezbazy() {
+            fetch("http://localhost:3000/baza", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({}),
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                var danezbazy = data.danezbazy;
+                console.log("Dane z bazy:", danezbazy);
+                var iloscRekordow = danezbazy.length;
+                console.log("Ilość rekordów w danezbazy:", iloscRekordow);
+                for (var i = 0; i < danezbazy.length; i++) {
+                  var record = danezbazy[i];
+                  var formattedData = record.place;
+                  var latitude = record.latitude;
+                  var longitude = record.longitude;
+                  var typeOfDanger = record.type;
+                  var descriptionOfDanger = record.description;
+
+                  // Twórz nowy marker i dodaj go do mapy
+                  var marker = L.marker([latitude, longitude]).addTo(map);
+                  marker
+                    .bindPopup(
+                      `<b>Adres:</b> ${formattedData}<br><b>Szerokość geograficzna:</b> ${latitude}<br><b>Długość geograficzna</b> ${longitude}
+      <br><b>Rodzaj zagrożenia:</b>${typeOfDanger}<br><b>Opis zagrożenia:</b>${descriptionOfDanger}`
+                    )
+                    .openPopup();
+
+                  // Dodaj marker do tablicy markers
+                  markers.push(marker);
+                }
+              })
+              .catch((error) => {
+                console.error(
+                  "Błąd przesyłania danych geograficznych:",
+                  error.message
+                );
+              });
+          }
+
+          danezbazy();
+
+          function script() {
+            var typeOfDanger = document.getElementById("typeOfDanger").value;
+            var descriptionOfDanger = document.getElementById(
+              "descriptionOfDanger"
+            ).value;
+
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(function (position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
+
+                console.log("Twoja aktualna lokalizacja:");
+                console.log("Szerokość geograficzna:", latitude);
+                console.log("Długość geograficzna:", longitude);
+
+                sendLocationToServer(latitude, longitude);
+              });
+            }
+
+            function sendLocationToServer(latitude, longitude) {
+              fetch("http://localhost:3000/map", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  latitude,
+                  longitude,
+                  typeOfDanger,
+                  descriptionOfDanger,
+                }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  var formattedDataJS = data.formattedData;
+                  var latitudeJS = data.latitude;
+                  var longitudeJS = data.longitude;
+                  var danezbazy = data.danezbazy; // Odbiór zmiennej danezbazy
+
+                  console.log("Formatted Data in JS:", formattedDataJS);
+                  console.log("Latitude in JS:", latitudeJS);
+                  console.log("Longitude in JS:", longitudeJS);
+                  console.log("Dane z bazy:", danezbazy);
+
+                  // Usuń istniejące markery
+                  //markers.forEach((marker) => marker.remove());
+                  markers = [];
+
+                  // Dodaj nowy marker do mapy z popup
+                  var marker = L.marker([latitude, longitude]).addTo(map);
+                  marker
+                    .bindPopup(
+                      `<b>Adres:</b> ${formattedDataJS}<br><b>Szerokość geograficzna:</b> ${latitudeJS}<br><b>Długość geograficzna</b> ${longitudeJS}
+                            <br><b>Rodzaj zagrożenia:</b>${typeOfDanger}<br><b>Opis zagrożenia:</b>${descriptionOfDanger}
+                            `
+                    )
+                    .openPopup();
+                  markers.push(marker);
+
+                  map.setView([latitude, longitude], 15); // Zmień przybliżenie i pozycję mapy
+                })
+                .catch((error) => {
+                  console.error(
+                    "Błąd przesyłania danych geograficznych:",
+                    error.message
+                  );
+                });
+            }
+          }
+        </script>
+      </div>
+    </div>
   </body>
 </html>

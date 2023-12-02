@@ -84,7 +84,7 @@ input, select, textarea {
     border-radius: 4px;
 }
 
-input::placeholder, select {
+input::placeholder, select, textarea {
   color: #1F1F1F;
   opacity: .6;
 }
@@ -93,6 +93,21 @@ label {
     margin-top: 10px;
     font-size: 18px;
     color: #1F1F1F;
+    font-weight: 600;
+}
+
+.submit:hover::after {
+  animation: arrowBounce .7s linear forwards;
+}
+
+@keyframes arrowBounce {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateX(-10px);
+  }
 }
 
 button {
@@ -107,32 +122,10 @@ button {
     justify-content: center;
 }
 
-.submit {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #B3B3B3;
-  flex-direction: row;
-}
-
-.submit::after {
-  content: '';
-  
-  margin-left: 15px;
-  width: 40px;
-  display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  background-image: url('icons/arrow2.svg');
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
 @media (max-width: 1000px) {
   form {
     padding: 0;
+    width: 100%;
   }
   
   .left-container, .right-container {
@@ -163,4 +156,3 @@ button {
     font-size: 14px;
   }
 }
-
