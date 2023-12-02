@@ -139,6 +139,7 @@ h3 {
   }
 }
 
+
 @media screen and (max-width: 420px) {
   body {
     padding: 0;
@@ -200,5 +201,27 @@ h3 {
     height: 50px;
     border-radius: 50%;
     border: 2px solid #B3B3B3;
+  }
+
+  .containerBottomArrow img {
+    animation: bounce 1s infinite;
+  }
+}
+
+@keyframes bounce {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  40% {
+    transform: translateY(-10px);
+  }
+
+  60% {
+    transform: translateY(-5px);
   }
 }
