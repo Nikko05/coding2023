@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pierwsza pomoc</title>
+</head>
+<body>
+    <div>Znajdziesz tu potrzebne informacje, które pomogą ci zachować zimną krew w sytuacji kryzysowej, zapewnić bezpieczeństwo sobie oraz innym potrzebującym</div>
+    <p>Wybierz rodzaj zagrozenia</p>
+    <select id="wb" onclick="danger()">
+        <option>Nieprzytomny poszkodowany</option>
+        <option>Złamanie kończyny</option>
+        <option>Krwotok</option>
+        <option>Oparzenie</option>
+        <option>Zadławienie</option>
+    </select>
+    <div id ='pomoc'>
+
+    </div>
+    <iframe width="560" id="ramka" height="315" src="https://www.youtube.com/embed/75JKFvUIyvQ?si=hmiyLUwKXQxZr-HP" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    <script>
+        var texts = ["W przypadku utraty przytomności wazne jest szybkie działanie. Po upewnieniu się ze jesteś w danym otoczeniu bezpieczne, przejmij inicjatywę w udzielaniu pomocy. Oceń czy poszkodowany faktycznie jest nieprzytomny a następnie oceń jego oddech. Na podstawie wykonanych badań podejmij stosowne kroki. Wyznacz osobę odpowiedzialną za wezwanie pomocy i jeśli poszkodowany nie oddycha rozpocznij resuscytacje krązeniowo-oddechową. W przeciwnym wypadku ułóż poszkodowanego w pozycji bocznej ustalonej.<img src='https://legionhdk.pl/images/a_grafy_informacji/aaa_Pierwsza_Pomoc/Pozycja_Boczna_ustalona/sposob_ukladania_pozycja_boczna_ustalona_pierwsza_pomoc_krwiodawstwo_klub_legion_legionhdk.jpg'>",
+        "W przypadku podejrzenia złamania kończyny, nalezy udzielić pomocy zakładając, ze kość faktycznie jest złamana, niezaleznie od faktycznego stanu rzeczy. Aby uchronić kość przed dalszymi uszkodzeniami, nalezy ją unieruchomić. Najlepiej wykorzystać chustę trójkątną, w przypadku braku jej dostępności nada się sztywny przedmiot, na przykład deska. Wyjątkiem są złamania otwarte, czyli takie kiedy ostry fragment kości przebija skórę i powoduje krwawienie. Nie wolno próbować wciskać kości do środka, nalezy powstrzymać krwotok, najlepiej przy uzyciu bandaza. Po unieruchomieniu złamania najlepiej wezwać pomoc oraz dbać o komfort termiczny poszkodowanego",
+        "Krwawienie i krwotoki są niezwykle niebezpieczne i przez szybką utratę duzych ilości krwii mogą w szybkim tępie doprowadzić do śmierci poszkodowanego. Aby wspomóc krwawiącego, nalezy niezwłocznie wezwać pomoc oraz podjąć próbę zatamowania krwawienia poprzez ucisk oraz sporządzenie odpowiedniego opatrunku. Szczególnie niebezpieczne są krwotoki wewnętrzne, kiedy to krew nie wypływa poza ciało, tylko zalewa organy wewnętrzne uszkadzając je. Jedyną mozliwością ratunku jest w takiej sytuacji natychmiastowe wezwanie specjalistycznej pomocy.<img height='300' width='300' src = 'https://static.zpe.gov.pl/portal/f/res-minimized/RmJLzLEOpO1TU/1657634821/4u6BOhg04ELDHcAuD7BvmCErNQaVOHlP.png'/>",
+        "Oparzenia skóry to sytuacja z którą mozna spotkać się na co dzień. Szybkie udzielenie pomocy moze zniwelować stopień doznanych szkód. Poparzone miejsce nalezy schłodzić pod zimną biezącą wodą. W ten sposób istnieje spora szansa, uchronimy poszkodowanego przed oparzenia drugiego bądź trzeciego stopnia. Niezaleznie od udzielenia pomocy, warto aby poparzone miejsce obejrzał lekarz. Znacznie gorzej sytuacja wygląda w przypadku oparzeń środkami chemicznymi bądź wynikającymi z promieniowania. Jedynie lekarz specjalista ma odpowiednie kompetencje aby pomóc takiej osobie.<img src = 'https://www.aptekagalen.pl/img/ident/stopnie-oparzen.jpg'/>",
+        ]
+        document.getElementById('ramka').src = "https://www.youtube.com/embed/eg6YseN5GU8?si=-ZHZjFNkRthaPL6s"
+        document.getElementById('pomoc').innerHTML = texts[0]
+        function danger() {
+            var link
+            var text
+            var zagrozenie = wb.value;
+            console.log(zagrozenie)
+            switch (zagrozenie) {
+                case "Nieprzytomny poszkodowany":
+                    link = "https://www.youtube.com/embed/eg6YseN5GU8?si=-ZHZjFNkRthaPL6s";
+                    text = texts[0]
+                    break;
+                case "Złamanie kończyny":
+                    text = texts[1];
+                    link = "https://www.youtube.com/embed/fx8y-EXQjVM?si=OrAqmlKcxViLBEQC"
+                    break;
+                case "Krwotok":
+                    text = texts[2];
+                    link = "https://www.youtube.com/embed/1VvzfAAplUE?si=mtfssJI9DAAt6frG"
+                    break;
+                case 'Oparzenie':
+                    text = texts[3];
+                    link = 'https://www.youtube.com/embed/oCyo1juhuwA?si=gxjQrbDeXbsH8ohE'
+            }
+            document.getElementById('ramka').src = link
+            document.getElementById('pomoc').innerHTML = text
+        }
+    </script>
+</body>
+</html>

@@ -5,6 +5,9 @@ const mysql = require('mysql2')
 const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const bcrypt = require("bcrypt")
+require("dotenv").config(); 
+
+
 
 
 app.set('view-engine', 'ejs')
@@ -117,6 +120,10 @@ app.post("/login", urlencodedParser, (req, res)=>{
     res.redirect('/login')
 })
 
+
+app.get('/firstaid', (req, res) => {
+    res.render('pierwszaPomoc.ejs')
+})
 
 app.listen(port, () => {
 
