@@ -84,7 +84,7 @@ input, select, textarea {
     border-radius: 4px;
 }
 
-input::placeholder, select {
+input::placeholder, select, textarea {
   color: #1F1F1F;
   opacity: .6;
 }
