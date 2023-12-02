@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser")
 const stripe = require('stripe')('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');
 const bcrypt = require("bcrypt")
 const axios = require('axios');
-require("dotenv").config(); 
+require("dotenv").config();
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -24,17 +24,7 @@ const connection = mysql.createConnection({
   port: 42881
 });
 
-app.get("/dangers",(req,res)=>{
-  connection.query('SELECT * FROM dangers', (error, results, fields) => {
-    if (error) throw error;
 
-    // Przetwórz wyniki zapytania SELECT
-    console.log('Wyniki zapytania SELECT:', results);
-
-    res.json({ results });
-    connection.end();
-  });
-})
 
 app.get('/donations', (req, res) => {
   res.render('donations.ejs');
@@ -45,17 +35,58 @@ app.get('/map', (req, res) => {
   res.render('map.ejs');
 });
 
+
+app.post('/baza', (req, res) => {
+  connection.query('SELECT * FROM dangers', (error, results, fields) => {
+    if (error) {
+      console.error('Błąd zapytania SQL:', error);
+      return res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: error.message });
+    }
+
+    const danezbazy = results;
+    res.json({ danezbazy });
+  });
+});
 app.post('/map', async (req, res) => {
   try {
-    const { latitude, longitude } = req.body;
+    const { latitude, longitude, typeOfDanger, descriptionOfDanger } = req.body;
+    
 
-    const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=538c04b100ed48b39c239f680215c3fd`);
-    const formattedData = response.data.results[0].formatted;
+    // Zapytanie SQL
+    connection.query('SELECT * FROM dangers', (error, results, fields) => {
+      if (error) {
+        console.error('Błąd zapytania SQL:', error);
+        return res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: error.message });
+      }
 
-    // Przekaz dane w formie JSON jako odpowiedź do klienta
-    res.json({ formattedData, latitude, longitude });
+      // Przetwórz wyniki zapytania SELECT
+      const danezbazy = results;
+
+      // Zapytanie do API geokodowania
+      axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=538c04b100ed48b39c239f680215c3fd`)
+        .then(response => {
+          const formattedData = response.data.results[0].formatted;
+          connection.connect(function(err) {
+            if (err) throw err;
+            console.log("Connected!");
+            var sql = `INSERT INTO dangers (place, latitude, longitude, type, description) VALUES
+             ('${formattedData}', '${latitude}', '${longitude}', '${typeOfDanger}', '${descriptionOfDanger}')`;
+            connection.query(sql, function (err, result) {
+              if (err) throw err;
+              console.log("1 record inserted");
+            });
+          });
+
+          // Przekaz dane w formie JSON jako odpowiedź do klienta
+          res.json({ formattedData, latitude, longitude, danezbazy });
+        })
+        .catch(axiosError => {
+          console.error('Błąd zapytania axios:', axiosError);
+          res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: axiosError.message });
+        });
+    });
   } catch (error) {
-    console.error('Błąd zapytania GET:', error);
+    console.error('Błąd zapytania POST:', error);
     res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: error.message });
   }
 });
@@ -63,9 +94,134 @@ app.post('/map', async (req, res) => {
 
 
 
+app.get('/grupy', (req, res) => {
+    if (req.cookies['user']) {
+        var cookie = req.cookies['user']
+        connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function (err, result) {
+            if (Object.keys(result).length > 0) {
+                if (result[0].id_grupy == null) {
+                    res.render('grupy.ejs')
+                } else {
+                    res.redirect('/grupyCzlonek')
+                }
+            }
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
 
+app.get('/grupyCzlonek', (req, res) => {
+    if (req.cookies['user']) {
+        let wyswietl = "<html><head><title>Twoja grupa</title></head><body>"
+        var cookie = req.cookies['user']
+        connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function(err, result, fields) {
+            if (Object.keys(result).length > 0) {
+                var id_grupy = result[0].id_grupy
+                connection.query(`SELECT * FROM users INNER JOIN groupy ON users.id_grupy = groupy.id WHERE users.id_grupy = ${id_grupy}`, function (err, res1, fields) {
+                    if (Object.keys(res1).length > 0) {
+                        wyswietl += "<p>" + res1[0].nazwa + "</p>"
+                        for (var i = 0; i < res1.length; i++) {
+                            wyswietl += "<div><p>" + res1[i].imie + " " + res1[i].nazwisko + "</p>" + "<p>" + res1[i].email + "</p></div>"
+                        }
+                        connection.query(`SELECT * FROM posts WHERE id_grupy = ${id_grupy} ORDER BY data DESC;`, function (err, res2, fields) {
+                            if (Object.keys(res2).length > 0) {
+                                wyswietl += "<div>"
+                                for (var i = 0; i < res2.length; i++) {
+                                    let d = res2[i].data
+                                    let year = d.getFullYear()
+                                    let month = ("0" + (d.getMonth() + 1)).slice(-2);
+                                    let date = ("0" + d.getDate()).slice(-2); 
+                                    wyswietl += "<p>" + res2[i].autor + "</p>" + "<p>" + date + '.' + month + '.' + year + "</p>" + "<div>" + res2[i].tresc + "</div>"
+                                }
+                                wyswietl += "</div>"
+                                wyswietl += "<a href = 'napiszPost'>Napisz post</a>"
+                                console.log(wyswietl)
+                                res.send(wyswietl)
+                            }
+                        })
+                    } else {
+                        res.redirect('/grupy')
+                    }
+                })
+            }
+        })
+    } else {
+        res.redirect('login')
+    }
+})
 
+app.get('/napiszPost', (req, res) => {
+    if (req.cookies['user']) {
+        res.render('napiszPost.ejs')
+    } else {
+        res.redirect('/login')
+    }
+})
 
+app.post('/napiszPost', (req, res) => {
+    if (req.cookies['user']) {
+        var cookie = req.cookies['user']
+        var text = req.body.tekst
+        connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function (err, result) {
+            if (Object.keys(result).length > 0) {
+                var id_grupy = result[0].id_grupy
+                if (id_grupy == null) {
+                    res.redirect('/grupa')
+                }
+                var id = result[0].id
+                var d = new Date()
+                let month = ("0" + (d.getMonth() + 1)).slice(-2);
+                let day = ("0" + d.getDate()).slice(-2);
+                let year = d.getFullYear()
+
+                var date = year + "-" + month + "-" + day
+                connection.query(`INSERT INTO posts (autor, tresc, id_grupy, id_autora, data) VALUES ('${cookie}', '${text}', ${id_grupy}, ${id}, '${date}')`, function (err, result) {
+                    if (err) throw err
+                    res.redirect('grupyCzlonek')
+                })
+            }
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.post('/grupy', (req, res) => {
+    if (req.cookies['user']) {
+        var cookie = req.cookies['user']
+        var nazwa = req.body.nazwa
+        var id
+        connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function (err, result) {
+                if (Object.keys(result).length > 0) {
+                    id = result[0].id
+                    connection.query(`SELECT * FROM groupy WHERE nazwa = '${nazwa}'`, function (err, res1) {
+                        if (Object.keys(res1).length > 0) {
+                            var id_grupy = res1[0].id
+                            connection.query(`UPDATE users SET id_grupy = ${id_grupy} WHERE login = '${cookie}'`, function (err, res2) {
+                                if (err) throw err
+                                res.redirect('/')
+                            })
+                        } else {
+                            connection.query(`INSERT INTO groupy (nazwa, id_zalozyciela) VALUES ('${nazwa}', ${id})`, function (err, res1) {
+                                connection.query(`SELECT id FROM groupy WHERE nazwa = '${nazwa}' AND id_zalozyciela = ${id}`, function (err, res2) {
+                                    if (Object.keys(result).length > 0) {
+                                        idG = res2[0].id
+                                        connection.query(`UPDATE users SET id_grupy = ${idG} WHERE login = '${cookie}'`, function (err, res3) {
+                                            if (err) throw err
+                                            res.redirect('/')
+                                        })
+                                    }
+                                })
+                            })
+                        }
+                    })
+                }
+            })
+    } else {
+        res.redirect('/login')
+    }
+})
 
 
 
@@ -76,10 +232,11 @@ connection.connect(function (err) {
 // app.listen(port, () => {
 //     console.log(`Serwer działa na http://localhost:${port}`);
 // });
-connection.connect(function(err) {
-    if (err) throw err;
-    console.log("Connected!");
-  });
+connection.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+
 const path = require('path')
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -152,11 +309,16 @@ app.post('/register', urlencodedParser, (req, res) => {
         res.send("Hasła się różnią")
       }
     }
-});
+  });
 });
 
 
 app.get('/', (req, res) => {
+    if (req.cookies['user']) {
+        res.render('index.ejs')
+    } else {
+        res.redirect('/login')
+    }
   /*var cookie
   if (req.cookies['user']) {
     cookie = req.cookies['user']
@@ -176,37 +338,37 @@ app.get('/', (req, res) => {
     })
   } else {
     res.redirect('/login')
-  }*/
+  } */
   res.render('index.ejs')
 })
 
-app.post("/login", urlencodedParser, (req, res)=>{
-    var login = req.body.login
-    var pass = req.body.pass
-    connection.connect(function(err) {
-        connection.query(`SELECT haslo FROM users WHERE login="${login}"`, function (err, result, fields) {
-        if (Object.keys(result).length > 0){
-            bcrypt.compare(pass, result[0].haslo, function (err, result) {
-                if (result) {
-                    console.log(result)
-                    res.cookie("user", login)
-                    res.redirect("/")
-                } else {
-                    res.send("Złe hasło")
-                }
-            })
-        } else {
-            res.send("Nie ma takiego uzytkownika")
-        }
+app.post("/login", urlencodedParser, (req, res) => {
+  var login = req.body.login
+  var pass = req.body.pass
+  connection.connect(function (err) {
+    connection.query(`SELECT haslo FROM users WHERE login="${login}"`, function (err, result, fields) {
+      if (Object.keys(result).length > 0) {
+        bcrypt.compare(pass, result[0].haslo, function (err, result) {
+          if (result) {
+            console.log(result)
+            res.cookie("user", login)
+            res.redirect("/")
+          } else {
+            res.send("Złe hasło")
+          }
         })
-    }
-        
-    
-   )
-  })
-  app.get('/logout', (req, res) => {
-    res.clearCookie('user', {domain: 'localhost'});
-    res.redirect('/login')
+      } else {
+        res.send("Nie ma takiego uzytkownika")
+      }
+    })
+  }
+
+
+  )
+})
+app.get('/logout', (req, res) => {
+  res.clearCookie('user', { domain: 'localhost' });
+  res.redirect('/login')
 })
 
 app.get("/profile", urlencodedParser, (req, res) => {
@@ -243,7 +405,7 @@ app.get("/profile", urlencodedParser, (req, res) => {
 });
 
 
-app.post("/profile", urlencodedParser, (req, res)=>{
+app.post("/profile", urlencodedParser, (req, res) => {
   let name = req.body.name;
   let surname = req.body.surname;
   let birthDate = req.body.birthDate;
@@ -255,7 +417,7 @@ app.post("/profile", urlencodedParser, (req, res)=>{
 
 //do wyświertlania
 app.get('/report', (req, res) => {
-    res.render('reportEvent.ejs')
+  res.render('reportEvent.ejs')
 })
 
 app.listen(port, () => {
