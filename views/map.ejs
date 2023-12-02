@@ -54,24 +54,22 @@
             <label class="" for="descriptionOfDanger"
               >Podaj opis zagrożenia *</label
             >
-            <input
+            <textarea
               type="text"
               placeholder="Opis zagrożenia"
               name=""
               id="descriptionOfDanger"
-            />
+            ></textarea>
           </div>
-          <input
-            type="button"
+          <button
+            type="submit"
             value="Zgłoś"
-            onclick="script()"
-            style="background: white"
-          />
+            onclick="script()">Zgłoś</button>
         </form>
       </div>
       <div class="right-container">
         <!-- mapa -->
-        <div id="map" style="height: 500px; width: 100%"></div>
+        <div id="map" class="map"></div>
         <script>
           let map = L.map("map").setView([49.6333308, 20.7166638], 5);
           L.tileLayer(
