@@ -8,17 +8,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "fs": "^0.0.1-security",
     "mysql": "^2.18.1",
     "mysql2": "^3.6.5",
-    "nodemon": "^3.0.1",
+    "nodemon": "^3.0.2",
     "openai": "^4.20.1",
     "readline-sync": "^1.4.10",
+    "stripe": "^14.7.0",
     "view-engine": "^1.1.1"
   },
   "devDependencies": {
