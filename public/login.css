@@ -9,6 +9,18 @@ h2 {
   padding: 0 30% 0 10%;
 }
 
+.error {
+  width: 100%;
+  padding: 0 10%;
+  font-size: 20px;
+  color: red;
+  display: none;
+}
+
+.isVisible {
+  display: flex;
+}
+
 h3 {
   color: #B3B3B3;
   font-weight: 400;
