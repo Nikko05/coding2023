@@ -312,7 +312,6 @@ app.post('/register', urlencodedParser, (req, res) => {
   });
 });
 
-
 app.get('/', (req, res) => {
     if (req.cookies['user']) {
         res.render('index.ejs')
@@ -354,7 +353,7 @@ app.post("/login", urlencodedParser, (req, res) => {
             res.cookie("user", login)
             res.redirect("/")
           } else {
-            res.send("Złe hasło")
+            
           }
         })
       } else {
@@ -362,8 +361,6 @@ app.post("/login", urlencodedParser, (req, res) => {
       }
     })
   }
-
-
   )
 })
 app.get('/logout', (req, res) => {
@@ -418,6 +415,10 @@ app.post("/profile", urlencodedParser, (req, res) => {
 //do wyświertlania
 app.get('/report', (req, res) => {
   res.render('reportEvent.ejs')
+})
+
+app.get('/firstAid', (req, res) => {
+  res.render('pierwszaPomoc.ejs')
 })
 
 app.listen(port, () => {
