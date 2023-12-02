@@ -11,8 +11,6 @@ require("dotenv").config();
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-
-
 app.set('view-engine', 'ejs')
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -26,6 +24,17 @@ const connection = mysql.createConnection({
   port: 42881
 });
 
+app.get("/dangers",(req,res)=>{
+  connection.query('SELECT * FROM dangers', (error, results, fields) => {
+    if (error) throw error;
+
+    // Przetwórz wyniki zapytania SELECT
+    console.log('Wyniki zapytania SELECT:', results);
+
+    res.json({ results });
+    connection.end();
+  });
+})
 
 app.get('/donations', (req, res) => {
   res.render('donations.ejs');
@@ -34,9 +43,6 @@ app.get('/donations', (req, res) => {
 
 app.get('/map', (req, res) => {
   res.render('map.ejs');
-
-
-
 });
 
 app.post('/map', async (req, res) => {
