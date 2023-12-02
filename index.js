@@ -118,6 +118,9 @@ app.post("/register", urlencodedParser, (req, res) => {
           res.send("Hasła się różnią");
         }
       }
+    }
+  );
+      
 app.post('/register', urlencodedParser, (req, res) => {
   var imie = req.body.imie
   var nazwisko = req.body.nazwisko
@@ -142,6 +145,7 @@ app.post('/register', urlencodedParser, (req, res) => {
         res.send("Hasła się różnią")
       }
     }
+  }
   );
 });
 
