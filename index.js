@@ -6,6 +6,9 @@ const bodyParser = require("body-parser")
 const cookieParser = require("cookie-parser")
 const stripe = require('stripe')('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');
 const bcrypt = require("bcrypt")
+require("dotenv").config(); 
+
+
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -147,6 +150,10 @@ app.post("/profile", urlencodedParser, (req, res)=>{
   res.redirect("/");
 })
 
+
+app.get('/firstaid', (req, res) => {
+    res.render('pierwszaPomoc.ejs')
+})
 
 app.listen(port, () => {
 
