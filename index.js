@@ -11,8 +11,6 @@ require("dotenv").config();
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
-
-
 app.set('view-engine', 'ejs')
 app.use(cookieParser())
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -217,6 +215,10 @@ app.post("/profile", urlencodedParser, (req, res)=>{
   res.redirect("/");
 })
 
+//do wyświertlania
+app.get('/report', (req, res) => {
+    res.render('reportEvent.ejs')
+})
 
 app.listen(port, () => {
 
