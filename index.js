@@ -82,7 +82,7 @@ app.get('/grupy', (req, res) => {
 
 app.get('/grupyCzlonek', (req, res) => {
     if (req.cookies['user']) {
-        var wyswietl = "<html><head><title>Twoja grupa</title></head><body>"
+        let wyswietl = "<html><head><title>Twoja grupa</title></head><body>"
         var cookie = req.cookies['user']
         connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function(err, result, fields) {
             if (Object.keys(result).length > 0) {
@@ -93,8 +93,22 @@ app.get('/grupyCzlonek', (req, res) => {
                         for (var i = 0; i < res1.length; i++) {
                             wyswietl += "<div><p>" + res1[i].imie + " " + res1[i].nazwisko + "</p>" + "<p>" + res1[i].email + "</p></div>"
                         }
-                        wyswietl += "</body>"
-                        res.send(wyswietl)
+                        connection.query(`SELECT * FROM posts WHERE id_grupy = ${id_grupy} ORDER BY data DESC;`, function (err, res2, fields) {
+                            if (Object.keys(res2).length > 0) {
+                                wyswietl += "<div>"
+                                for (var i = 0; i < res2.length; i++) {
+                                    let d = res2[i].data
+                                    let year = d.getFullYear()
+                                    let month = ("0" + (d.getMonth() + 1)).slice(-2);
+                                    let date = ("0" + d.getDate()).slice(-2); 
+                                    wyswietl += "<p>" + res2[i].autor + "</p>" + "<p>" + date + '.' + month + '.' + year + "</p>" + "<div>" + res2[i].tresc + "</div>"
+                                }
+                                wyswietl += "</div>"
+                                wyswietl += "<a href = 'napiszPost'>Napisz post</a>"
+                                console.log(wyswietl)
+                                res.send(wyswietl)
+                            }
+                        })
                     } else {
                         res.redirect('/grupy')
                     }
@@ -103,6 +117,42 @@ app.get('/grupyCzlonek', (req, res) => {
         })
     } else {
         res.redirect('login')
+    }
+})
+
+app.get('/napiszPost', (req, res) => {
+    if (req.cookies['user']) {
+        res.render('napiszPost.ejs')
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.post('/napiszPost', (req, res) => {
+    if (req.cookies['user']) {
+        var cookie = req.cookies['user']
+        var text = req.body.tekst
+        connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function (err, result) {
+            if (Object.keys(result).length > 0) {
+                var id_grupy = result[0].id_grupy
+                if (id_grupy == null) {
+                    res.redirect('/grupa')
+                }
+                var id = result[0].id
+                var d = new Date()
+                let month = ("0" + (d.getMonth() + 1)).slice(-2);
+                let day = ("0" + d.getDate()).slice(-2);
+                let year = d.getFullYear()
+
+                var date = year + "-" + month + "-" + day
+                connection.query(`INSERT INTO posts (autor, tresc, id_grupy, id_autora, data) VALUES ('${cookie}', '${text}', ${id_grupy}, ${id}, '${date}')`, function (err, result) {
+                    if (err) throw err
+                    res.redirect('grupyCzlonek')
+                })
+            }
+        })
+    } else {
+        res.redirect('/login')
     }
 })
 
