@@ -178,6 +178,10 @@ app.get('/napiszPost', (req, res) => {
     }
 })
 
+app.get('/firstAid', (req, res) => {
+    res.render('pierwszaPomoc.ejs')
+})
+
 app.post('/napiszPost', (req, res) => {
     if (req.cookies['user']) {
         var cookie = req.cookies['user']
