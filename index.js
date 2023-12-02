@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser")
 const stripe = require('stripe')('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');
 const bcrypt = require("bcrypt")
 const axios = require('axios');
-require("dotenv").config(); 
+require("dotenv").config();
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false });
 
@@ -24,17 +24,7 @@ const connection = mysql.createConnection({
   port: 42881
 });
 
-app.get("/dangers",(req,res)=>{
-  connection.query('SELECT * FROM dangers', (error, results, fields) => {
-    if (error) throw error;
 
-    // Przetwórz wyniki zapytania SELECT
-    console.log('Wyniki zapytania SELECT:', results);
-
-    res.json({ results });
-    connection.end();
-  });
-})
 
 app.get('/donations', (req, res) => {
   res.render('donations.ejs');
@@ -45,17 +35,58 @@ app.get('/map', (req, res) => {
   res.render('map.ejs');
 });
 
+
+app.post('/baza', (req, res) => {
+  connection.query('SELECT * FROM dangers', (error, results, fields) => {
+    if (error) {
+      console.error('Błąd zapytania SQL:', error);
+      return res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: error.message });
+    }
+
+    const danezbazy = results;
+    res.json({ danezbazy });
+  });
+});
 app.post('/map', async (req, res) => {
   try {
-    const { latitude, longitude } = req.body;
+    const { latitude, longitude, typeOfDanger, descriptionOfDanger } = req.body;
+    
 
-    const response = await axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=538c04b100ed48b39c239f680215c3fd`);
-    const formattedData = response.data.results[0].formatted;
+    // Zapytanie SQL
+    connection.query('SELECT * FROM dangers', (error, results, fields) => {
+      if (error) {
+        console.error('Błąd zapytania SQL:', error);
+        return res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: error.message });
+      }
 
-    // Przekaz dane w formie JSON jako odpowiedź do klienta
-    res.json({ formattedData, latitude, longitude });
+      // Przetwórz wyniki zapytania SELECT
+      const danezbazy = results;
+
+      // Zapytanie do API geokodowania
+      axios.get(`https://api.opencagedata.com/geocode/v1/json?q=${latitude}+${longitude}&key=538c04b100ed48b39c239f680215c3fd`)
+        .then(response => {
+          const formattedData = response.data.results[0].formatted;
+          connection.connect(function(err) {
+            if (err) throw err;
+            console.log("Connected!");
+            var sql = `INSERT INTO dangers (place, latitude, longitude, type, description) VALUES
+             ('${formattedData}', '${latitude}', '${longitude}', '${typeOfDanger}', '${descriptionOfDanger}')`;
+            connection.query(sql, function (err, result) {
+              if (err) throw err;
+              console.log("1 record inserted");
+            });
+          });
+
+          // Przekaz dane w formie JSON jako odpowiedź do klienta
+          res.json({ formattedData, latitude, longitude, danezbazy });
+        })
+        .catch(axiosError => {
+          console.error('Błąd zapytania axios:', axiosError);
+          res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: axiosError.message });
+        });
+    });
   } catch (error) {
-    console.error('Błąd zapytania GET:', error);
+    console.error('Błąd zapytania POST:', error);
     res.status(500).json({ error: 'Wystąpił błąd podczas przetwarzania danych.', details: error.message });
   }
 });
@@ -201,6 +232,10 @@ connection.connect(function (err) {
 // app.listen(port, () => {
 //     console.log(`Serwer działa na http://localhost:${port}`);
 // });
+connection.connect(function (err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 
 const path = require('path')
 app.use(express.static(path.join(__dirname, 'public')));
@@ -274,7 +309,7 @@ app.post('/register', urlencodedParser, (req, res) => {
         res.send("Hasła się różnią")
       }
     }
-});
+  });
 });
 
 
@@ -302,33 +337,33 @@ app.get('/', (req, res) => {
   res.render('index.ejs')
 })
 
-app.post("/login", urlencodedParser, (req, res)=>{
-    var login = req.body.login
-    var pass = req.body.pass
-    connection.connect(function(err) {
-        connection.query(`SELECT haslo FROM users WHERE login="${login}"`, function (err, result, fields) {
-        if (Object.keys(result).length > 0){
-            bcrypt.compare(pass, result[0].haslo, function (err, result) {
-                if (result) {
-                    console.log(result)
-                    res.cookie("user", login)
-                    res.redirect("/")
-                } else {
-                    res.send("Złe hasło")
-                }
-            })
-        } else {
-            res.send("Nie ma takiego uzytkownika")
-        }
+app.post("/login", urlencodedParser, (req, res) => {
+  var login = req.body.login
+  var pass = req.body.pass
+  connection.connect(function (err) {
+    connection.query(`SELECT haslo FROM users WHERE login="${login}"`, function (err, result, fields) {
+      if (Object.keys(result).length > 0) {
+        bcrypt.compare(pass, result[0].haslo, function (err, result) {
+          if (result) {
+            console.log(result)
+            res.cookie("user", login)
+            res.redirect("/")
+          } else {
+            res.send("Złe hasło")
+          }
         })
-    }
-        
-    
-   )
-  })
-  app.get('/logout', (req, res) => {
-    res.clearCookie('user', {domain: 'localhost'});
-    res.redirect('/login')
+      } else {
+        res.send("Nie ma takiego uzytkownika")
+      }
+    })
+  }
+
+
+  )
+})
+app.get('/logout', (req, res) => {
+  res.clearCookie('user', { domain: 'localhost' });
+  res.redirect('/login')
 })
 
 app.get("/profile", urlencodedParser, (req, res) => {
@@ -365,7 +400,7 @@ app.get("/profile", urlencodedParser, (req, res) => {
 });
 
 
-app.post("/profile", urlencodedParser, (req, res)=>{
+app.post("/profile", urlencodedParser, (req, res) => {
   let name = req.body.name;
   let surname = req.body.surname;
   let birthDate = req.body.birthDate;
@@ -377,7 +412,7 @@ app.post("/profile", urlencodedParser, (req, res)=>{
 
 //do wyświertlania
 app.get('/report', (req, res) => {
-    res.render('reportEvent.ejs')
+  res.render('reportEvent.ejs')
 })
 
 app.listen(port, () => {
