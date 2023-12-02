@@ -26,6 +26,20 @@ const connection = mysql.createConnection({
 
 
 
+app.get("/earthquakes", (req, res) => {
+  axios.get("https://www.fema.gov/api/open/v2/FemaRegions")
+    .then(response => {
+      console.log('Dane z API:', response.data);
+      res.json(response.data); // Wysyłanie danych z API jako odpowiedź
+    })
+    .catch(error => {
+      console.error('Błąd podczas pobierania danych:', error.message);
+      res.status(500).json({ error: 'Błąd podczas pobierania danych z API FEMA' });
+    });
+});
+
+
+
 app.get('/donations', (req, res) => {
   res.render('donations.ejs');
 });
