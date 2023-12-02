@@ -314,6 +314,11 @@ app.post('/register', urlencodedParser, (req, res) => {
 
 
 app.get('/', (req, res) => {
+    if (req.cookies['user']) {
+        res.render('index.ejs')
+    } else {
+        res.redirect('/login')
+    }
   /*var cookie
   if (req.cookies['user']) {
     cookie = req.cookies['user']
