@@ -202,9 +202,38 @@ app.post("/login", urlencodedParser, (req, res)=>{
     res.redirect('/login')
 })
 
-app.get("/profile", urlencodedParser, (req, res)=>{
-  res.render("profile.ejs");
-})
+app.get("/profile", urlencodedParser, (req, res) => {
+  let cookie = req.cookies["user"];
+
+  connection.query(
+    `SELECT imie, nazwisko, login, email FROM users WHERE login = '${cookie}'`,
+    function (err, result, fields) {
+      if (err) {
+        console.error("Error executing query:", err);
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      // Check if a user was found
+      if (result.length > 0) {
+        let imie = result[0].imie;
+        let nazwisko = result[0].nazwisko;
+        let login = result[0].login;
+        let email = result[0].email;
+
+        res.render("profile.ejs", {
+          imie: imie,
+          nazwisko: nazwisko,
+          login: login,
+          email: email,
+        });
+      } else {
+        // No user found with the given cookie value
+        res.status(404).send("User not found");
+      }
+    }
+  );
+});
 
 
 app.post("/profile", urlencodedParser, (req, res)=>{
