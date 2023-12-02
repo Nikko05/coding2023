@@ -157,7 +157,7 @@ app.post('/register', urlencodedParser, (req, res) => {
 
 
 app.get('/', (req, res) => {
-  var cookie
+  /*var cookie
   if (req.cookies['user']) {
     cookie = req.cookies['user']
     var wyswietl = "<html><head><title>Zagrozenia</title></head><body>"
@@ -176,7 +176,8 @@ app.get('/', (req, res) => {
     })
   } else {
     res.redirect('/login')
-  }
+  }*/
+  res.render('index.ejs')
 })
 
 app.post("/login", urlencodedParser, (req, res)=>{
