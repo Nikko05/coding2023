@@ -16,6 +16,9 @@
         <option>Krwotok</option>
         <option>Oparzenie</option>
         <option>Zadławienie</option>
+        <option>Trzęsienie ziemi</option>
+        <option>Pożar</option>
+        <option>Powódź</option>
     </select>
     <div id ='pomoc'>
 
@@ -24,8 +27,12 @@
     <script>
         var texts = ["<div>W przypadku utraty przytomności wazne jest szybkie działanie. Po upewnieniu się ze jesteś w danym otoczeniu bezpieczne, przejmij inicjatywę w udzielaniu pomocy. Oceń czy poszkodowany faktycznie jest nieprzytomny a następnie oceń jego oddech. Na podstawie wykonanych badań podejmij stosowne kroki. Wyznacz osobę odpowiedzialną za wezwanie pomocy i jeśli poszkodowany nie oddycha rozpocznij resuscytacje krązeniowo-oddechową. W przeciwnym wypadku ułóż poszkodowanego w pozycji bocznej ustalonej.</div><div><img src='https://legionhdk.pl/images/a_grafy_informacji/aaa_Pierwsza_Pomoc/Pozycja_Boczna_ustalona/sposob_ukladania_pozycja_boczna_ustalona_pierwsza_pomoc_krwiodawstwo_klub_legion_legionhdk.jpg'></div>",
         "<div>W przypadku podejrzenia złamania kończyny, nalezy udzielić pomocy zakładając, ze kość faktycznie jest złamana, niezaleznie od faktycznego stanu rzeczy. Aby uchronić kość przed dalszymi uszkodzeniami, nalezy ją unieruchomić. Najlepiej wykorzystać chustę trójkątną, w przypadku braku jej dostępności nada się sztywny przedmiot, na przykład deska. Wyjątkiem są złamania otwarte, czyli takie kiedy ostry fragment kości przebija skórę i powoduje krwawienie. Nie wolno próbować wciskać kości do środka, nalezy powstrzymać krwotok, najlepiej przy uzyciu bandaza. Po unieruchomieniu złamania najlepiej wezwać pomoc oraz dbać o komfort termiczny poszkodowanego</div>",
-        "<div>Krwawienie i krwotoki są niezwykle niebezpieczne i przez szybką utratę duzych ilości krwii mogą w szybkim tępie doprowadzić do śmierci poszkodowanego. Aby wspomóc krwawiącego, nalezy niezwłocznie wezwać pomoc oraz podjąć próbę zatamowania krwawienia poprzez ucisk oraz sporządzenie odpowiedniego opatrunku. Szczególnie niebezpieczne są krwotoki wewnętrzne, kiedy to krew nie wypływa poza ciało, tylko zalewa organy wewnętrzne uszkadzając je. Jedyną mozliwością ratunku jest w takiej sytuacji natychmiastowe wezwanie specjalistycznej pomocy.</div><div><img src = 'https://static.zpe.gov.pl/portal/f/res-minimized/RmJLzLEOpO1TU/1657634821/4u6BOhg04ELDHcAuD7BvmCErNQaVOHlP.png'/></div>",
-        "<div>Oparzenia skóry to sytuacja z którą mozna spotkać się na co dzień. Szybkie udzielenie pomocy moze zniwelować stopień doznanych szkód. Poparzone miejsce nalezy schłodzić pod zimną biezącą wodą. W ten sposób istnieje spora szansa, uchronimy poszkodowanego przed oparzenia drugiego bądź trzeciego stopnia. Niezaleznie od udzielenia pomocy, warto aby poparzone miejsce obejrzał lekarz. Znacznie gorzej sytuacja wygląda w przypadku oparzeń środkami chemicznymi bądź wynikającymi z promieniowania. Jedynie lekarz specjalista ma odpowiednie kompetencje aby pomóc takiej osobie.</div><div><img src = 'https://www.aptekagalen.pl/img/ident/stopnie-oparzen.jpg'/></div>",
+        "<div>Krwawienie i krwotoki są niezwykle niebezpieczne i przez szybką utratę duzych ilości krwii mogą w szybkim tępie doprowadzić do śmierci poszkodowanego. Aby wspomóc krwawiącego, nalezy niezwłocznie wezwać pomoc oraz podjąć próbę zatamowania krwawienia poprzez ucisk oraz sporządzenie odpowiedniego opatrunku. Szczególnie niebezpieczne są krwotoki wewnętrzne, kiedy to krew nie wypływa poza ciało, tylko zalewa organy wewnętrzne uszkadzając je. Jedyną mozliwością ratunku jest w takiej sytuacji natychmiastowe wezwanie specjalistycznej pomocy.<div><img src = 'https://static.zpe.gov.pl/portal/f/res-minimized/RmJLzLEOpO1TU/1657634821/4u6BOhg04ELDHcAuD7BvmCErNQaVOHlP.png'/></div>",
+        "<div>Oparzenia skóry to sytuacja z którą mozna spotkać się na co dzień. Szybkie udzielenie pomocy moze zniwelować stopień doznanych szkód. Poparzone miejsce nalezy schłodzić pod zimną biezącą wodą. W ten sposób istnieje spora szansa, uchronimy poszkodowanego przed oparzenia drugiego bądź trzeciego stopnia. Niezaleznie od udzielenia pomocy, warto aby poparzone miejsce obejrzał lekarz. Znacznie gorzej sytuacja wygląda w przypadku oparzeń środkami chemicznymi bądź wynikającymi z promieniowania. Jedynie lekarz specjalista ma odpowiednie kompetencje aby pomóc takiej osobie.<div><img src = 'https://www.aptekagalen.pl/img/ident/stopnie-oparzen.jpg'/></div>",
+        "<div>Zadławienie to sytuacja, w której ciało obce, najczęściej jedzenie, blokuje drogi oddechowe i uniemozliwia oddychanie. Jest to sytuacja bezpośredniego zagrozenia zycia i osobie w tym stanie nalezy jak najszybciej pomóc. Podobne do zadławienia jest zakrztuszenie, kiedy to drogi oddechowe blokuje ciecz.<div>",
+        "<div>Choć trzęsienia ziemi są zjawiskami rzadkimi w naszym kraju, to jednak zdarzają się one czasami, a będąc w innych miejscach świata mozna się z nimi spotkać stosunkowo często. Warto więc wiedzieć jak się podczas katastrofy tego typu zachować, gdyz, zwłaszcza niektóre z nich, mogą nieść powazne straty materialne, a konsekwencje trzęsień mogą powodować powazne uszczerbki na zdrowiu i zyciu</div>",
+        "<div>Pożary są zjawiskiem częstym i w przypadku niezachowania odpowiednich środków ostrozności niebezpiecznym. Poza oczywistymi stratami materialnymi, wiązą się one z zagrozeniem zycia, nie tylko poprzez wysoką temperaturę powodującą poparzenia, ale takze zabójczy czad. Warto wiedziec jak zachować się w przypadku pozaru oraz ewakuacji, tak aby kazdy mógł bezpiecznie opuścić budynek, w sytuacji pozaru nalezy zachować spokój i nie lekcewazyc zagrozenia. Dobrą praktyką są takze przeglądy techniczne instalacji elektrycznej w budynku a takze przeglądy kominiarskie, które pozwalają uniknąć awarii mogących spowodować pozar</div>",
+        "<div>Powodzie podobnie jak trzęsienia ziemi nie zdarzają się często w Polsce, jednak jeśli juz się zdarzą, są niebezpieczne i równiez warto wiedzieć jak w ich wypadku nalezy się zachować"
         ]
         document.getElementById('ramka').src = "https://www.youtube.com/embed/eg6YseN5GU8?si=-ZHZjFNkRthaPL6s"
         document.getElementById('pomoc').innerHTML = texts[0]
@@ -50,6 +57,24 @@
                 case 'Oparzenie':
                     text = texts[3];
                     link = 'https://www.youtube.com/embed/oCyo1juhuwA?si=gxjQrbDeXbsH8ohE'
+                    break;
+                case 'Zadławienie':
+                    text = texts[4];
+                    link = "https://www.youtube.com/embed/9NYZfIPkTt4?si=keA-fp-gFCU-osA0"
+                    break;
+                case 'Trzęsienie ziemi':
+                    text = texts[5]
+                    link = "https://www.youtube.com/embed/r94VlWEZfGA?si=dTGdzJjD7J_WBJpl"
+                    break;
+                case "Pożar":
+                    text = texts[6];
+                    link = "https://www.youtube.com/embed/ji_yLxw6-lk?si=O-gi1ffRt-7D0wws"
+                    break;
+                case "Powódź":
+                    text = texts[7]
+                    link = "https://www.youtube.com/embed/R4XkgwxAY4M?si=jk1lBCNFJA4V30Pe" 
+                    break;
+                
             }
             document.getElementById('ramka').src = link
             document.getElementById('pomoc').innerHTML = text
