@@ -1,0 +1,45 @@
+body {
+    position: relative;
+    height: 100vh;
+    padding-top: 20px
+}
+
+.containerForm {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px solid #b3b3b3;
+    width: 50vw;
+    height: 50vh;
+    border-radius: 10px;
+}
+
+textarea {
+    width: 30vw;
+    height: 70%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+input {
+    padding: 8px 20px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid black;
+}
+
+.linkgruopy {
+    padding: 8px 20px;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid black;
+    text-decoration: none;
+    color: black;
+    margin: 20px;
+}

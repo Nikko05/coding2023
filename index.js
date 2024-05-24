@@ -17,11 +17,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const connection = mysql.createConnection({
-  host: 'roundhouse.proxy.rlwy.net',
+  host: 'localhost',
   user: 'root',
-  password: "-1GHde2Ad5C3gfBA-Ga22ddB1gBfhE5e",
-  database: 'railway',
-  port: 42881
+  password: "",
+  database: 'safeharbour'
 });
 
 
@@ -131,46 +130,47 @@ app.get('/grupy', (req, res) => {
         res.redirect('/login')
     }
 })
-
 app.get('/grupyCzlonek', (req, res) => {
-    if (req.cookies['user']) {
-        let wyswietl = "<html><head><title>Twoja grupa</title></head><body>"
-        var cookie = req.cookies['user']
-        connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function(err, result, fields) {
-            if (Object.keys(result).length > 0) {
-                var id_grupy = result[0].id_grupy
-                connection.query(`SELECT * FROM users INNER JOIN groupy ON users.id_grupy = groupy.id WHERE users.id_grupy = ${id_grupy}`, function (err, res1, fields) {
-                    if (Object.keys(res1).length > 0) {
-                        wyswietl += "<p>" + res1[0].nazwa + "</p>"
-                        for (var i = 0; i < res1.length; i++) {
-                            wyswietl += "<div><p>" + res1[i].imie + " " + res1[i].nazwisko + "</p>" + "<p>" + res1[i].email + "</p></div>"
-                        }
-                        connection.query(`SELECT * FROM posts WHERE id_grupy = ${id_grupy} ORDER BY data DESC;`, function (err, res2, fields) {
-                            if (Object.keys(res2).length > 0) {
-                                wyswietl += "<div>"
-                                for (var i = 0; i < res2.length; i++) {
-                                    let d = res2[i].data
-                                    let year = d.getFullYear()
-                                    let month = ("0" + (d.getMonth() + 1)).slice(-2);
-                                    let date = ("0" + d.getDate()).slice(-2); 
-                                    wyswietl += "<p>" + res2[i].autor + "</p>" + "<p>" + date + '.' + month + '.' + year + "</p>" + "<div>" + res2[i].tresc + "</div>"
-                                }
-                                wyswietl += "</div>"
-                                wyswietl += "<a href = 'napiszPost'>Napisz post</a>"
-                                console.log(wyswietl)
-                                res.send(wyswietl)
-                            }
-                        })
-                    } else {
-                        res.redirect('/grupy')
-                    }
-                })
-            }
-        })
-    } else {
-        res.redirect('login')
-    }
+  if (req.cookies['user']) {
+      let wyswietl = "<html><head><title>Twoja grupa</title><link rel='stylesheet' href='index.css'></head><body class='bodyy'><div class='cont'><h2>Twoja grupa</h2><div class='left-container'"
+      var cookie = req.cookies['user']
+      connection.query(`SELECT * FROM users WHERE login = '${cookie}'`, function(err, result, fields) {
+          if (Object.keys(result).length > 0) {
+              var id_grupy = result[0].id_grupy
+              console.log(id_grupy)
+              connection.query(`SELECT * FROM users INNER JOIN groupy ON users.id_grupy = groupy.id WHERE users.id_grupy = ${id_grupy}`, function (err, res1, fields) {
+                  if (Object.keys(res1).length > 0) {
+                      wyswietl += "<p><b>" + res1[0].nazwa + "</b></p>"
+                      for (var i = 0; i < res1.length; i++) {
+                          wyswietl += "<div><p>" + res1[i].imie + " " + res1[i].nazwisko + "</p>" + "<p>" + res1[i].email + "</p></div>"
+                      }
+                      connection.query(`SELECT * FROM posts WHERE id_grupy = ${id_grupy} ORDER BY data DESC;`, function (err, res2, fields) {
+                          if (res2 && Object.keys(res2).length > 0) {
+                              wyswietl += "<div class='container'>"
+                              for (var i = 0; i < res2.length; i++) {
+                                  let d = res2[i].data
+                                  let year = d.getFullYear()
+                                  let month = ("0" + (d.getMonth() + 1)).slice(-2);
+                                  let date = ("0" + d.getDate()).slice(-2); 
+                                  wyswietl += "<div class='abcd'><p>" + res2[i].autor + "</p>" + "<p>" + date + '.' + month + '.' + year + "</p>" + "<div>" + res2[i].tresc + "</div></div>"
+                              }
+                              wyswietl += "</div>"
+                              console.log(wyswietl)
+                          }
+                          wyswietl += "<a href = 'napiszPost' class='link123'>Napisz post</a></body>"
+                          res.send(wyswietl)
+                      })
+                  } else {
+                      res.redirect('/grupy')
+                  }
+              })
+          }
+      })
+  } else {
+      res.redirect('login')
+  }
 })
+
 
 app.get('/napiszPost', (req, res) => {
     if (req.cookies['user']) {
@@ -225,7 +225,7 @@ app.post('/grupy', (req, res) => {
                             var id_grupy = res1[0].id
                             connection.query(`UPDATE users SET id_grupy = ${id_grupy} WHERE login = '${cookie}'`, function (err, res2) {
                                 if (err) throw err
-                                res.redirect('/grupyCzlonek')
+                                res.redirect('/')
                             })
                         } else {
                             connection.query(`INSERT INTO groupy (nazwa, id_zalozyciela) VALUES ('${nazwa}', ${id})`, function (err, res1) {
@@ -234,7 +234,7 @@ app.post('/grupy', (req, res) => {
                                         idG = res2[0].id
                                         connection.query(`UPDATE users SET id_grupy = ${idG} WHERE login = '${cookie}'`, function (err, res3) {
                                             if (err) throw err
-                                            res.redirect('/grupyCzlonek')
+                                            res.redirect('/')
                                         })
                                     }
                                 })

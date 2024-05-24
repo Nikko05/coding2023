@@ -48,36 +48,30 @@
               <option value="Kryzys Migracyjny">Kryzys Migracyjny</option>
               <option value="Kryzys Zdrowotny">Kryzys Zdrowotny</option>
               <option value="Kryzys Żywnościowy">Kryzys Żywnościowy</option>
-              <option value="Kryzys Żywnościowy">Zanieczyszczenie Środowiska</option>
-              <option value="Kryzys Żywnościowy">Zagrożenia Klimatyczne</option>
-              <option value="Kryzys Żywnościowy">Niewłaściwe Warunki Życia</option>
-              <option value="Kryzys Żywnościowy">Kryzysy Ekonomiczne</option>
-              <option value="Kryzys Żywnościowy">Zagrożenia dla Praw Człowieka</option>
-              <option value="Kryzys Żywnościowy">Niewłaściwe Warunki Edukacyjne</option>
-              <option value="Kryzys Żywnościowy">Zagrożenia Dzieciństwa</option>
-              <option value="Kryzys Żywnościowy">Inne</option>
             </select>
           </div>
           <div class="input-container">
             <label class="" for="descriptionOfDanger"
               >Podaj opis zagrożenia *</label
             >
-            <textarea
+            <input
               type="text"
               placeholder="Opis zagrożenia"
               name=""
               id="descriptionOfDanger"
-            ></textarea>
+            />
           </div>
-          <button
-            type="submit"
+          <input
+            type="button"
             value="Zgłoś"
-            onclick="script()">Zgłoś</button>
+            onclick="script()"
+            style="background: white"
+          />
         </form>
       </div>
       <div class="right-container">
         <!-- mapa -->
-        <div id="map" class="map"></div>
+        <div id="map" style="height: 500px; width: 100%"></div>
         <script>
           let map = L.map("map").setView([49.6333308, 20.7166638], 5);
           L.tileLayer(
