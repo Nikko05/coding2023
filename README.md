@@ -1,2 +1,10 @@
 Projekt z hackatonu coding night 2023.
-Dodaję readme, ponieważ nie wyświetlam się jako contributor z jakiegoś dziwnego powodu, pomimo, że bardzo dużo commitowałm.
+
+Utworzono aplikację webową, której tematem była pomoc w sytuacjach kryzysowych i stanach wyjątkowych.
+
+Zespół projektowy:
+1. Łukasz Deja - backend i integracja z frontendem
+2. Nikodem Kusiak - backend i integracja z frontendem
+3. Sebastian Madzia - backend, API
+4. Artur Szymański - frontend
+5. Szymon Kosecki - frontend
